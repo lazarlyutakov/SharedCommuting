@@ -7,24 +7,40 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.login.LoginActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.register.RegisterActivity;
+
+import mehdi.sakout.fancybuttons.FancyButton;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnSignIn;
+    private FancyButton btnSignIn;
+    private FancyButton btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnSignIn = (Button)findViewById(R.id.btn_sign_in);
+        btnSignIn = (FancyButton)findViewById(R.id.btn_sign_in);
+        btnRegister = (FancyButton)findViewById(R.id.btn_register);
+
         btnSignIn.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
+        switch (view.getId()) {
+            case R.id.btn_register :
+                Intent regIntent = new Intent(this, RegisterActivity.class);
+                startActivity(regIntent);
+                break;
+            case R.id.btn_sign_in:
+                Intent signInIntent = new Intent(this, LoginActivity.class);
+                startActivity(signInIntent);
+                break;
+        }
+
     }
 }

@@ -40,10 +40,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AutoCompleteTextView lastNameBox;
     private AutoCompleteTextView phoneNumberBox;
     private ButtonsFragment btnsFragment;
-    private FancyButton regBtn;
-    private FancyButton signInBtn;
-    private FancyButton logOutBtn;
-    private TextView tvSignedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         btnsFragment = new ButtonsFragment();
 
-        /*regBtn = btnsFragment.getRegisterButton();
-        signInBtn = btnsFragment.getSignInButton();
-        logOutBtn = btnsFragment.getLogOutButton();
-        tvSignedUser = btnsFragment.getSignedUserTv();*/
     }
 
     @Override

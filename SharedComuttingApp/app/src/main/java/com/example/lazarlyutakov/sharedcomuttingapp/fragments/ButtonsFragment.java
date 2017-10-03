@@ -7,9 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.login.LoginActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.register.RegisterActivity;

@@ -24,7 +24,8 @@
         <activity android:name=".authentication.register.RegisterActivity" />
         <activity
             android:name=".authentication.login.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
+        <activity android:name=".authentication.LoggedInActivity"></activity>
     </application>
 
 </manifest>

@@ -6,15 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,18 +24,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.Inflater;
-
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
 
-    private Button regBtn;
+    private Button submitBtn;
     private EditText passwordBox;
     private AutoCompleteTextView emailBox;
     private FirebaseAuth auth;
@@ -44,14 +39,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AutoCompleteTextView firstNameBox;
     private AutoCompleteTextView lastNameBox;
     private AutoCompleteTextView phoneNumberBox;
+    private ButtonsFragment btnsFragment;
+    private FancyButton regBtn;
+    private FancyButton signInBtn;
+    private FancyButton logOutBtn;
+    private TextView tvSignedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        regBtn = (Button)findViewById(R.id.btn_submit_registration);
-        regBtn.setOnClickListener(this);
+        submitBtn = (Button)findViewById(R.id.btn_submit_registration);
+        submitBtn.setOnClickListener(this);
 
         passwordBox = (EditText)findViewById(R.id.et_password_box);
         emailBox = (AutoCompleteTextView)findViewById(R.id.et_email_box);
@@ -62,14 +62,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
+
+        btnsFragment = new ButtonsFragment();
+
+        /*regBtn = btnsFragment.getRegisterButton();
+        signInBtn = btnsFragment.getSignInButton();
+        logOutBtn = btnsFragment.getLogOutButton();
+        tvSignedUser = btnsFragment.getSignedUserTv();*/
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        regBtn.setOnClickListener(this);
-
-
+        submitBtn.setOnClickListener(this);
     }
 
     @Override
@@ -128,20 +133,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     user.getEmail(), user.isEmailVerified()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));*/
 
-            FancyButton btnReg = (FancyButton)findViewById(R.id.btn_register);
-            btnReg.setVisibility(View.GONE);
-
-            FancyButton bntSignIn = (FancyButton)findViewById(R.id.btn_sign_in);
-            bntSignIn.setVisibility(View.GONE);
-
-            FancyButton btnLogOut = (FancyButton)findViewById(R.id.btn_logout);
-            btnLogOut.setVisibility(View.VISIBLE);
-
-            TextView signedUser = (TextView) findViewById(R.id.tv_signed_user);
-            signedUser.setText(usernameBox.getText().toString() + " is signed in");
-
            // findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LoggedInActivity.class);
+            intent.putExtra("username", usernameBox.getText().toString());
             startActivity(intent);
 
         } else {

@@ -7,7 +7,9 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.login.LoginActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.register.RegisterActivity;
@@ -22,17 +24,15 @@ public class ButtonsFragment extends Fragment implements View.OnClickListener {
 
     private FancyButton btnSignIn;
     private FancyButton btnRegister;
-    private FancyButton btnLogout;
+    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_buttons, container, false);
-
+        root = inflater.inflate(R.layout.fragment_buttons, container, false);
         btnSignIn = root.findViewById(R.id.btn_sign_in);
         btnRegister = root.findViewById(R.id.btn_register);
-        btnLogout = root.findViewById(R.id.btn_logout);
 
         btnSignIn.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -40,6 +40,11 @@ public class ButtonsFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onClick(View view) {
@@ -55,5 +60,4 @@ public class ButtonsFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
 }

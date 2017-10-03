@@ -11,9 +11,6 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FancyButton btnSignIn;
-    private FancyButton btnRegister;
-    private FancyButton btnLogout;
     private Fragment btnsFragment;
 
     @Override
@@ -21,12 +18,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         btnsFragment = new ButtonsFragment();
 
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.btns_fragment, btnsFragment)
                 .commit();
-
     }
 }

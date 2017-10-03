@@ -13,11 +13,18 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +35,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText passwordBox;
     private AutoCompleteTextView emailBox;
     private FirebaseAuth auth;
+    private DatabaseReference database;
+    private AutoCompleteTextView usernameBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +48,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         passwordBox = (EditText)findViewById(R.id.et_password_box);
         emailBox = (AutoCompleteTextView)findViewById(R.id.et_email_box);
+        usernameBox = (AutoCompleteTextView)findViewById(R.id.et_username_box);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -74,6 +85,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
+                            User newUser = new User(usernameBox.getText().toString(), passwordBox.getText().toString(), emailBox.getText().toString());
+                            Date uId = new Date();
+                           database.child("Users").child(uId.toString()).setValue(newUser);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

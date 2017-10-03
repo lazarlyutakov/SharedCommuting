@@ -86,8 +86,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
                             User newUser = new User(usernameBox.getText().toString(), passwordBox.getText().toString(), emailBox.getText().toString());
-                            Date uId = new Date();
-                           database.child("Users").child(uId.toString()).setValue(newUser);
+                            String uId = user.getUid();
+                           database.child("Users").child(uId).setValue(newUser);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

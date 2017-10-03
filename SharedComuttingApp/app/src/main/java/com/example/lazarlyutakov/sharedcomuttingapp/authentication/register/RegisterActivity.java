@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
@@ -25,18 +27,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
+
+import mehdi.sakout.fancybuttons.FancyButton;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
 
     private Button regBtn;
-    private String tbValue;
     private EditText passwordBox;
     private AutoCompleteTextView emailBox;
     private FirebaseAuth auth;
     private DatabaseReference database;
     private AutoCompleteTextView usernameBox;
+    private AutoCompleteTextView firstNameBox;
+    private AutoCompleteTextView lastNameBox;
+    private AutoCompleteTextView phoneNumberBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         passwordBox = (EditText)findViewById(R.id.et_password_box);
         emailBox = (AutoCompleteTextView)findViewById(R.id.et_email_box);
         usernameBox = (AutoCompleteTextView)findViewById(R.id.et_username_box);
+        firstNameBox = (AutoCompleteTextView)findViewById(R.id.et_first_name_box);
+        lastNameBox = (AutoCompleteTextView)findViewById(R.id.et_last_name_box);
+        phoneNumberBox = (AutoCompleteTextView)findViewById(R.id.et_phone_number_box);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
@@ -85,7 +95,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
-                            User newUser = new User(usernameBox.getText().toString(), passwordBox.getText().toString(), emailBox.getText().toString());
+                            User newUser = new User(usernameBox.getText().toString(),
+                                    passwordBox.getText().toString(),
+                                    firstNameBox.getText().toString(),
+                                    lastNameBox.getText().toString(),
+                                    phoneNumberBox.getText().toString(),
+                                    emailBox.getText().toString()
+                            );
                             String uId = user.getUid();
                            database.child("Users").child(uId).setValue(newUser);
                             updateUI(user);
@@ -112,11 +128,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     user.getEmail(), user.isEmailVerified()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));*/
 
-            /*findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
-            findViewById(R.id.email_password_fields).setVisibility(View.GONE);
-            findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
+            FancyButton btnReg = (FancyButton)findViewById(R.id.btn_register);
+            btnReg.setVisibility(View.GONE);
 
-            findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());*/
+            FancyButton bntSignIn = (FancyButton)findViewById(R.id.btn_sign_in);
+            bntSignIn.setVisibility(View.GONE);
+
+            FancyButton btnLogOut = (FancyButton)findViewById(R.id.btn_logout);
+            btnLogOut.setVisibility(View.VISIBLE);
+
+            TextView signedUser = (TextView) findViewById(R.id.tv_signed_user);
+            signedUser.setText(usernameBox.getText().toString() + " is signed in");
+
+           // findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 

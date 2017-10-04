@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,8 +39,9 @@ public class DrawerCreator {
     private Drawer drawer;
     private Drawer.OnDrawerItemClickListener onDrawerItemClickListener;
     private Activity activity;
-    String fName;
-    String lName;
+    private String fName;
+    private String lName;
+    private boolean toChange = false;
 
     public DrawerCreator() {
 
@@ -56,7 +58,7 @@ public class DrawerCreator {
 
     public void createDrawer(final Activity activity) {
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("asd");
-        final SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Profil");
+        final SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Main");
         final SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(2).withName("Contacts");
         final SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(2).withName("Logout");
 
@@ -75,7 +77,12 @@ public class DrawerCreator {
                             @Override
                             public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
                                 // opens fragment with user profile details
+                                toChange = true;
                                 Toast.makeText(activity, "Wazaaaaaa", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(activity, LoggedInActivity.class);
+                                intent.putExtra("change", toChange);
+                                activity.startActivity(intent);
+                                toChange = false;
                                 return false;
                             }
                         })

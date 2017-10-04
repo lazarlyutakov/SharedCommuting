@@ -8,42 +8,25 @@
     android:orientation="vertical"
     tools:context="com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity">
 
-    <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_logged_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+        </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/user_profil_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ko staaa"/>
-
-
-    <mehdi.sakout.fancybuttons.FancyButton
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp"
-        fancy:fb_borderColor="#FFFFFF"
-        fancy:fb_borderWidth="1dp"
-        fancy:fb_defaultColor="#FF6600"
-        fancy:fb_focusColor="#9bd823"
-        fancy:fb_radius="30dp"
-        fancy:fb_text="LOGOUT"
-        fancy:fb_textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/tv_logged_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""/>
-
-
-    </LinearLayout>
-
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 
 </LinearLayout>

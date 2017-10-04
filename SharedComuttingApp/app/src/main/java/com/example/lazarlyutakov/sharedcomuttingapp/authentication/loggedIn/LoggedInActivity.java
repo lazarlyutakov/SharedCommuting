@@ -28,6 +28,9 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private DatabaseReference databaseReference;
     private FirebaseDatabase database;
     private String userId;
+    private String fName;
+    private String lName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +52,16 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 tvLoggedInUser.setText("Hello, " + dbReader.readUserData(dataSnapshot).getUsername());
+                fName = dbReader.readUserData(dataSnapshot).getFirstName();
+                lName = dbReader.readUserData(dataSnapshot).getLastName();
+                DrawerCreator drawer = new DrawerCreator(LoggedInActivity.this, auth, fName, lName);
+                drawer.createDrawer(LoggedInActivity.this);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-        DrawerCreator drawer = new DrawerCreator(LoggedInActivity.this, auth);
-        drawer.createDrawer(this);
-
 
         btnLogout.setOnClickListener(this);
     }

@@ -22,7 +22,7 @@ public class DatabaseReader {
     private final FirebaseAuth auth;
     private final FirebaseDatabase database;
     private final DatabaseReference databaseReference;
-    User myUser;
+    private User myUser;
 
 
     public DatabaseReader(){

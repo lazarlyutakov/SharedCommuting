@@ -8,7 +8,13 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -31,15 +37,21 @@ public class DrawerCreator {
     private FirebaseAuth auth;
     private Drawer drawer;
     private Drawer.OnDrawerItemClickListener onDrawerItemClickListener;
-    Activity activity;
+    private Activity activity;
+    String fName;
+    String lName;
 
     public DrawerCreator() {
 
     }
 
-    public DrawerCreator(Activity activity, FirebaseAuth auth){
+    public DrawerCreator(Activity activity, FirebaseAuth auth, String fName, String lName){
+        super();
         this.auth = FirebaseAuth.getInstance();
         this.activity = activity;
+        this.fName = fName;
+        this.lName = lName;
+
     }
 
     public void createDrawer(final Activity activity) {
@@ -50,15 +62,14 @@ public class DrawerCreator {
 
 
 
+
         this.drawer = new DrawerBuilder()
                 .withAccountHeader(new AccountHeaderBuilder()
                         .withActivity(activity)
                         //.withHeaderBackground(R.drawable.ic_menu_gallery)
                         .addProfiles(
                                 new ProfileDrawerItem()
-                                        .withName("To be done")
-                                        .withEmail("to be done")
-
+                                        .withName(fName + " " + lName)
                         )
                         .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                             @Override

@@ -5,10 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -17,6 +26,9 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvLoggedInUser;
     private FancyButton btnLogout;
     private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +37,24 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
         tvLoggedInUser = (TextView)findViewById(R.id.tv_logged_user);
         btnLogout = (FancyButton)findViewById(R.id.btn_logout);
+
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        FirebaseUser user = auth.getCurrentUser();
+        userId = user.getUid();
 
-        Intent intent = getIntent();
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                readUserData(dataSnapshot);
+            }
 
-        Bundle bd = intent.getExtras();
-        if(bd != null)
-        {
-            String loggedUser = (String) bd.get("username");
-            tvLoggedInUser.setText("Hello, " + loggedUser);
-        }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         btnLogout.setOnClickListener(this);
     }
@@ -44,5 +64,21 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         auth.signOut();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void readUserData(DataSnapshot dataSnapshot){
+        User currentUser = new User();
+
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+            currentUser.setFirstName(ds.child(userId).getValue(User.class).getFirstName());
+            currentUser.setLastName(ds.child(userId).getValue(User.class).getLastName());
+            currentUser.setUsername(ds.child(userId).getValue(User.class).getUsername());
+            currentUser.setPassword(ds.child(userId).getValue(User.class).getPassword());
+            currentUser.setEmail(ds.child(userId).getValue(User.class).getEmail());
+            currentUser.setPhoneNumber(ds.child(userId).getValue(User.class).getPhoneNumber());
+
+            tvLoggedInUser.setText("Hello, " + currentUser.getUsername());
+        }
     }
 }

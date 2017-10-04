@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,13 +40,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignIn = (Button)findViewById(R.id.email_sign_in_button);
 
         btnSignIn.setOnClickListener(this);
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+
         FirebaseUser currentUser = auth.getCurrentUser();
         updateUI(currentUser);
     }
@@ -61,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!validateForm()) {
             return;
         }
-
 
         // showProgressDialog();
 
@@ -114,10 +114,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(FirebaseUser user) {
        // hideProgressDialog();
+
         if (user != null) {
             Intent intent = new Intent(this, LoggedInActivity.class);
-            intent.putExtra("username", user.getEmail());
             startActivity(intent);
+
         } else {
             Toast.makeText(this, "Please, sign in or register", Toast.LENGTH_SHORT).show();
         }

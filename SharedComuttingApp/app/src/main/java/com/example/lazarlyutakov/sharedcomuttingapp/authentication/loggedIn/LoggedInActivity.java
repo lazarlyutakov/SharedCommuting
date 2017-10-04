@@ -1,4 +1,4 @@
-package com.example.lazarlyutakov.sharedcomuttingapp.authentication;
+package com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -29,6 +34,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private DatabaseReference databaseReference;
     private FirebaseDatabase database;
     private String userId;
+    private Drawer drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,10 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+
+        DrawerCreator drawer = new DrawerCreator();
+        drawer.createDrawer(this);
+
 
         btnLogout.setOnClickListener(this);
     }

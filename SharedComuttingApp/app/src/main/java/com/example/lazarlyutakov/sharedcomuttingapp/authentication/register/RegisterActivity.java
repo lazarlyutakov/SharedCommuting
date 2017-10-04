@@ -9,11 +9,10 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
-import com.example.lazarlyutakov.sharedcomuttingapp.authentication.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import mehdi.sakout.fancybuttons.FancyButton;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 

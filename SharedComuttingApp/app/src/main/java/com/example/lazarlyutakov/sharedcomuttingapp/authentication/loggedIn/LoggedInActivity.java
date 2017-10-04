@@ -19,10 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -35,6 +31,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseDatabase database;
     private String userId;
     private Drawer drawer;
+    private LoggedInActivity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +59,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        DrawerCreator drawer = new DrawerCreator();
+        DrawerCreator drawer = new DrawerCreator(LoggedInActivity.this, auth);
         drawer.createDrawer(this);
 
 

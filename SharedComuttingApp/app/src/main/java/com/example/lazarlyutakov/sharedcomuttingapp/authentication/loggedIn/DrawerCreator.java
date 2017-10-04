@@ -48,16 +48,23 @@ public class DrawerCreator {
         final SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(2).withName("Contacts");
         final SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(2).withName("Logout");
 
+
+
         this.drawer = new DrawerBuilder()
                 .withAccountHeader(new AccountHeaderBuilder()
                         .withActivity(activity)
-                        // .withHeaderBackground(R.drawable.header)
+                        //.withHeaderBackground(R.drawable.ic_menu_gallery)
                         .addProfiles(
-                                new ProfileDrawerItem().withName("To be done").withEmail("to be done")
+                                new ProfileDrawerItem()
+                                        .withName("To be done")
+                                        .withEmail("to be done")
+
                         )
                         .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                             @Override
                             public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                                // opens fragment with user profile details
+                                Toast.makeText(activity, "Wazaaaaaa", Toast.LENGTH_SHORT).show();
                                 return false;
                             }
                         })
@@ -96,7 +103,4 @@ public class DrawerCreator {
                 .build();
     }
 
-    public void setOnDrawerItemClickListener(Drawer.OnDrawerItemClickListener onDrawerItemClickListener) {
-        this.onDrawerItemClickListener = onDrawerItemClickListener;
-    }
 }

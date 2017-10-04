@@ -36,6 +36,7 @@ dependencies {
     compile('com.mikepenz:materialdrawer:4.+') {
         transitive = true
     }
+
     testCompile 'junit:junit:4.12'
 }
 

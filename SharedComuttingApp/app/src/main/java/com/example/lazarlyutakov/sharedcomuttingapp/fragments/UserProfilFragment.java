@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
@@ -29,6 +30,9 @@ public class UserProfilFragment extends Fragment {
     private TextView phoneNumber;
     private TextView username;
     private TextView email;
+    private TextView car;
+    private TextView seats;
+    private DatabaseReader dbReader;
 
     public UserProfilFragment() {
         // Required empty public constructor
@@ -43,13 +47,15 @@ public class UserProfilFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        final DatabaseReader dbReader = new DatabaseReader();
+        dbReader = new DatabaseReader();
 
         fName = (TextView) root.findViewById(R.id.signed_user_first_name);
         lName = (TextView) root.findViewById(R.id.signed_user_last_name);
         username = (TextView) root.findViewById(R.id.signed_user_username);
         phoneNumber = (TextView) root.findViewById(R.id.signed_user_phone_number);
         email = (TextView) root.findViewById(R.id.signed_user_email);
+        car = (TextView) root.findViewById(R.id.signed_user_car);
+        seats = (TextView) root.findViewById(R.id.signed_seats_available);
 
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -60,6 +66,11 @@ public class UserProfilFragment extends Fragment {
                 username.setText(dbReader.readUserData(dataSnapshot).getUsername());
                 phoneNumber.setText(dbReader.readUserData(dataSnapshot).getPhoneNumber());
                 email.setText(dbReader.readUserData(dataSnapshot).getEmail());
+                if(dbReader.readUserData(dataSnapshot).getCarModel() != null &&
+                        dbReader.readUserData(dataSnapshot).getSeatsAvailable() != null) {
+                    car.setText(dbReader.readUserData(dataSnapshot).getCarModel());
+                    seats.setText(dbReader.readUserData(dataSnapshot).getSeatsAvailable());
+                }
             }
 
             @Override

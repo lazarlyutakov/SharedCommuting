@@ -62,8 +62,9 @@ public class DatabaseReader {
             currentUser.setPassword(ds.child(userId).getValue(User.class).getPassword());
             currentUser.setEmail(ds.child(userId).getValue(User.class).getEmail());
             currentUser.setPhoneNumber(ds.child(userId).getValue(User.class).getPhoneNumber());
+            currentUser.setCarModel(ds.child(userId).getValue(User.class).getCarModel());
+            currentUser.setSeatsAvailable(ds.child(userId).getValue(User.class).getSeatsAvailable());
 
-           // tvLoggedInUser.setText("Hello, " + currentUser.getUsername());
         }
 
         return currentUser;

@@ -61,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         database = FirebaseDatabase.getInstance().getReference();
 
         btnsFragment = new ButtonsFragment();
-
     }
 
     @Override

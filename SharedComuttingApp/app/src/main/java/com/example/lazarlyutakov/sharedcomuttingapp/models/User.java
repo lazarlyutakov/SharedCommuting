@@ -1,5 +1,10 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.models;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Lazar Lyutakov on 2.10.2017 г..
  */
@@ -11,6 +16,8 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
+    private String carModel;
+    private String seatsAvailable;
 
     public User() {
 
@@ -21,7 +28,6 @@ public class User {
         setPassword(password);
         setEmail(email);
     }
-
     public User(String username, String password, String firstName, String lastName, String phoneNumber, String email) {
         setUsername(username);
         setPassword(password);
@@ -30,6 +36,20 @@ public class User {
         setEmail(email);
         setPhoneNumber(phoneNumber);
     }
+
+    public User(String username, String password, String firstName, String lastName, String phoneNumber, String email, String carModel,
+                String seatsAvailable) {
+        setUsername(username);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+        setCarModel(carModel);
+        setSeatsAvailable(seatsAvailable);
+    }
+
+
 
     public String getUsername() {
         return username;
@@ -77,5 +97,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getSeatsAvailable() {
+        return seatsAvailable;
+    }
+
+    public void setSeatsAvailable(String seatsAvailable) {
+        this.seatsAvailable = seatsAvailable;
     }
 }

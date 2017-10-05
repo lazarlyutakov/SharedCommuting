@@ -59,9 +59,9 @@ public class DrawerCreator {
 
     public void createDrawer(final Activity activity) {
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("asd");
-        final SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName("Main");
-        final SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(2).withName("Contacts");
-        final SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(2).withName("Logout");
+        final SecondaryDrawerItem main = new SecondaryDrawerItem().withIdentifier(2).withName("Main");
+        final SecondaryDrawerItem contacts = new SecondaryDrawerItem().withIdentifier(2).withName("Contacts");
+        final SecondaryDrawerItem logout = new SecondaryDrawerItem().withIdentifier(2).withName("Logout");
 
 
 
@@ -92,24 +92,25 @@ public class DrawerCreator {
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
-                        item2,
-                        item3
+                        main,
+                        contacts
                 )
                 .addDrawerItems(
-                        item4
+                        logout
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if(item2.isSelected()){
-                            Toast.makeText(activity, "clicked item 2", Toast.LENGTH_SHORT).show();
+                        if(main.isSelected()){
+                            Intent intent = new Intent(activity, LoggedInActivity.class);
+                            activity.startActivity(intent);
 
                         }
-                        if(item3.isSelected()){
+                        if(contacts.isSelected()){
                             Toast.makeText(activity, "clicked item 3", Toast.LENGTH_SHORT).show();
 
                         }
-                        if(item4.isSelected()){
+                        if(logout.isSelected()){
                             auth.signOut();
                             Intent intent = new Intent(activity, MainActivity.class);
                             activity.startActivity(intent);

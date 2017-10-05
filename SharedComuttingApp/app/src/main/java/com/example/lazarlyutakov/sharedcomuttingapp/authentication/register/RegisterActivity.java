@@ -16,6 +16,7 @@ import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.Logg
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.Encryptor;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AutoCompleteTextView phoneNumberBox;
     private ButtonsFragment btnsFragment;
     private Encryptor encryptor;
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         phoneNumberBox = (AutoCompleteTextView)findViewById(R.id.et_phone_number_box);
 
         encryptor = new Encryptor();
+        validator = new Validator();
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
@@ -77,6 +80,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
+
+        if(validator.validatePassword(passwordBox) == false){
+            return;
+        }
+        if(validator.validateUsername(usernameBox) == false){
+            return;
+        }
+        if(validator.validatePersonalNames(firstNameBox) == false){
+            return;
+        }
+        if(validator.validatePersonalNames(lastNameBox) == false){
+            return;
+        }
+        if(validator.validatePhoneNumber(phoneNumberBox) == false){
+            return;
+        }
+
         createAccount(emailBox.getText().toString(), passwordBox.getText().toString());
         Toast.makeText(this, emailBox.getText().toString(), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "gotovo", Toast.LENGTH_SHORT).show();

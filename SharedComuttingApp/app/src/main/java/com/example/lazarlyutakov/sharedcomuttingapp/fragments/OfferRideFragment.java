@@ -11,6 +11,9 @@ import android.widget.AutoCompleteTextView;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.login.LoginActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.register.RegisterActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +39,7 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
     private DatabaseReader dbReader;
     private String car;
     private String seatsAvailable;
+    private FancyButton btnSetLocation;
 
     public OfferRideFragment() {
         // Required empty public constructor
@@ -53,6 +57,9 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
 
         btnSubmitOffer = (FancyButton) root.findViewById(R.id.btn_offer_submit);
         btnSubmitOffer.setOnClickListener(this);
+
+        btnSetLocation = (FancyButton) root.findViewById(R.id.btn_set_location_offer);
+        btnSetLocation.setOnClickListener(this);
 
         database = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
@@ -77,12 +84,19 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        car = etCar.getText().toString();
-        seatsAvailable = etSeatsAvailable.getText().toString();
+        switch (view.getId()) {
+            case R.id.btn_offer_submit :
+                car = etCar.getText().toString();
+                seatsAvailable = etSeatsAvailable.getText().toString();
+                updateUserData();
+                Intent intent = new Intent(getActivity(), LoggedInActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_set_location_offer:
+                Intent intentLocation = new Intent(getActivity(), FindMyLocationActivity.class);
+                startActivity(intentLocation);
+                break;
+        }
 
-        updateUserData();
-
-        Intent intent = new Intent(getActivity(), LoggedInActivity.class);
-        startActivity(intent);
     }
 }

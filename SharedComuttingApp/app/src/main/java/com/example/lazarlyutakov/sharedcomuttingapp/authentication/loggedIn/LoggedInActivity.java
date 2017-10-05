@@ -6,15 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
-import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
-public class LoggedInActivity extends AppCompatActivity {
+public class LoggedInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvLoggedInUser;
     private FirebaseAuth auth;
@@ -32,6 +30,9 @@ public class LoggedInActivity extends AppCompatActivity {
     private String fName;
     private String lName;
     private Fragment userProfilFragment;
+    private FancyButton btnOffer;
+    private FancyButton btnNeed;
+    private Fragment offerRideFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,11 @@ public class LoggedInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logged_in);
 
         tvLoggedInUser = (TextView)findViewById(R.id.tv_logged_user);
+        btnOffer = (FancyButton)findViewById(R.id.btn_offer_ride);
+        btnNeed = (FancyButton)findViewById(R.id.btn_need_ride);
+
+        btnOffer.setOnClickListener(this);
+        btnNeed.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -73,15 +79,34 @@ public class LoggedInActivity extends AppCompatActivity {
         if(extra == false) {
             return;
         } else {
-            tvLoggedInUser.setVisibility(View.GONE);
             userProfilFragment = new UserProfilFragment();
-
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.user_profil_fragment, userProfilFragment)
-                    .commit();
+            changeFragment(R.id.user_profil_fragment, userProfilFragment);
         }
+    }
 
+    @Override
+    public void onClick(View view) {
+        offerRideFragment = new OfferRideFragment();
 
+        switch (view.getId()) {
+            case R.id.btn_need_ride :
+                /*Intent regIntent = new Intent(this, RegisterActivity.class);
+                startActivity(regIntent);*/
+                break;
+            case R.id.btn_offer_ride:
+                changeFragment(R.id.offer_ride_fragment, offerRideFragment);
+                break;
+        }
+    }
+
+    private void changeFragment(Integer id, Fragment fragment){
+        tvLoggedInUser.setVisibility(View.GONE);
+        btnNeed.setVisibility(View.GONE);
+        btnOffer.setVisibility(View.GONE);
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(id, fragment)
+                .commit();
     }
 }

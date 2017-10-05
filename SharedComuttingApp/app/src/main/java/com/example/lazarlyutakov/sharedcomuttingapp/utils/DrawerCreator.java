@@ -1,4 +1,4 @@
-package com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn;
+package com.example.lazarlyutakov.sharedcomuttingapp.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +79,6 @@ public class DrawerCreator {
                             public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
                                 // opens fragment with user profile details
                                 toChange = true;
-                                Toast.makeText(activity, "Wazaaaaaa", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(activity, LoggedInActivity.class);
                                 intent.putExtra("change", toChange);
                                 activity.startActivity(intent);

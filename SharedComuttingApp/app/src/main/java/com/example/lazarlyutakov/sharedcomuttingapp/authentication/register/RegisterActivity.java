@@ -15,6 +15,7 @@ import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.Encryptor;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AutoCompleteTextView lastNameBox;
     private AutoCompleteTextView phoneNumberBox;
     private ButtonsFragment btnsFragment;
+    private Encryptor encryptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         firstNameBox = (AutoCompleteTextView)findViewById(R.id.et_first_name_box);
         lastNameBox = (AutoCompleteTextView)findViewById(R.id.et_last_name_box);
         phoneNumberBox = (AutoCompleteTextView)findViewById(R.id.et_phone_number_box);
+
+        encryptor = new Encryptor();
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance().getReference();
@@ -90,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
                             User newUser = new User(usernameBox.getText().toString(),
-                                    passwordBox.getText().toString(),
+                                    encryptor.encrypt(passwordBox.getText().toString()),
                                     firstNameBox.getText().toString(),
                                     lastNameBox.getText().toString(),
                                     phoneNumberBox.getText().toString(),

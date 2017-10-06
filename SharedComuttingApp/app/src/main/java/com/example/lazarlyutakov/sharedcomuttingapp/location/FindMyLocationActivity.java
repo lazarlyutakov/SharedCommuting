@@ -1,5 +1,7 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.location;
 
+import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,8 +14,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.SetTimeOut;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -27,7 +32,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FindMyLocationActivity extends AppCompatActivity
         implements OnMapReadyCallback {
@@ -36,7 +49,9 @@ public class FindMyLocationActivity extends AppCompatActivity
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
-    private GeoDataClient mGeoDataClient;
+    private FirebaseAuth auth;
+    private DatabaseReference database;
+
     private PlaceDetectionClient mPlaceDetectionClient;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -50,6 +65,9 @@ public class FindMyLocationActivity extends AppCompatActivity
 
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
+    private double currUserLatitude;
+    private double currentUserLongitude;
+    private SetTimeOut timeOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +80,18 @@ public class FindMyLocationActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_find_my_location);
 
-        mGeoDataClient = Places.getGeoDataClient(this, null);
+        database = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
 
-        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
+        timeOut = new SetTimeOut();
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+       mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
     }
 
@@ -93,13 +114,36 @@ public class FindMyLocationActivity extends AppCompatActivity
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
+
+
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //Location Permission already granted
+            mFusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                currUserLatitude = location.getLatitude();
+                                currentUserLongitude = location.getLongitude();
+                                updateUserData(currUserLatitude, currentUserLongitude);
+                                Toast.makeText(FindMyLocationActivity.this, "Location successfuly updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+        }
+
     }
 
     private void getDeviceLocation() {
-
         try {
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -111,6 +155,7 @@ public class FindMyLocationActivity extends AppCompatActivity
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -149,6 +194,7 @@ public class FindMyLocationActivity extends AppCompatActivity
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mLocationPermissionGranted = true;
+
                 }
             }
         }
@@ -172,5 +218,19 @@ public class FindMyLocationActivity extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    public void updateUserData(double latitude, double longitude) {
+        FirebaseUser user = auth.getCurrentUser();
+        String uId = user.getUid();
+
+        Map<String, Object> updates = new HashMap<>();
+
+        updates.put("Users/" + uId + "/" + "latitude", latitude);
+        updates.put("Users/" + uId + "/" + "longitude", longitude);
+
+
+        database.updateChildren(updates);
+
     }
 }

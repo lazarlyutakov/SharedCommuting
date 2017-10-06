@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
-import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +49,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        final DatabaseReader dbReader = new DatabaseReader();
+        final DatabaseHandler dbReader = new DatabaseHandler();
 
 
         databaseReference.addValueEventListener(new ValueEventListener() {

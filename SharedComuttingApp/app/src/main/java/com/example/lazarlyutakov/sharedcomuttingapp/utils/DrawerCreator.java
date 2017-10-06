@@ -1,22 +1,13 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
-import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
-import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
-import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -27,8 +18,6 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-
-import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
  * Created by Lazar Lyutakov on 4.10.2017 г..

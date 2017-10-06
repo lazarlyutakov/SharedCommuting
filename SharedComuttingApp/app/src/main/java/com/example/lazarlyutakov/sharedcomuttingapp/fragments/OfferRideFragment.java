@@ -11,10 +11,8 @@ import android.widget.AutoCompleteTextView;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
-import com.example.lazarlyutakov.sharedcomuttingapp.authentication.login.LoginActivity;
-import com.example.lazarlyutakov.sharedcomuttingapp.authentication.register.RegisterActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
-import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +34,7 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
     private FancyButton btnSubmitOffer;
     private DatabaseReference database;
     private FirebaseAuth auth;
-    private DatabaseReader dbReader;
+    private DatabaseHandler dbHandler;
     private String car;
     private String seatsAvailable;
     private FancyButton btnSetLocation;
@@ -63,23 +61,9 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
 
         database = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
-        dbReader = new DatabaseReader();
+        dbHandler = new DatabaseHandler();
 
         return root;
-    }
-
-    public void updateUserData() {
-        FirebaseUser user = auth.getCurrentUser();
-        String uId = user.getUid();
-
-        Map<String, Object> updates = new HashMap<>();
-
-        updates.put("Users/" + uId + "/" + "carModel", car);
-        updates.put("Users/" + uId + "/" + "seatsAvailable", seatsAvailable);
-
-
-        database.updateChildren(updates);
-
     }
 
     @Override
@@ -88,7 +72,7 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
             case R.id.btn_offer_submit :
                 car = etCar.getText().toString();
                 seatsAvailable = etSeatsAvailable.getText().toString();
-                updateUserData();
+                dbHandler.updateUserCarDetails(car, seatsAvailable);
                 Intent intent = new Intent(getActivity(), LoggedInActivity.class);
                 startActivity(intent);
                 break;

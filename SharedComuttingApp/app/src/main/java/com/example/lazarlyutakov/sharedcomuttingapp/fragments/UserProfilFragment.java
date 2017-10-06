@@ -7,10 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
-import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseReader;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +31,7 @@ public class UserProfilFragment extends Fragment {
     private TextView email;
     private TextView car;
     private TextView seats;
-    private DatabaseReader dbReader;
+    private DatabaseHandler dbReader;
 
     public UserProfilFragment() {
         // Required empty public constructor
@@ -47,7 +46,7 @@ public class UserProfilFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        dbReader = new DatabaseReader();
+        dbReader = new DatabaseHandler();
 
         fName = (TextView) root.findViewById(R.id.signed_user_first_name);
         lName = (TextView) root.findViewById(R.id.signed_user_last_name);

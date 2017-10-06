@@ -1,6 +1,7 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.location;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.SetTimeOut;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -49,9 +52,6 @@ public class FindMyLocationActivity extends AppCompatActivity
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
-    private FirebaseAuth auth;
-    private DatabaseReference database;
-
     private PlaceDetectionClient mPlaceDetectionClient;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -67,7 +67,7 @@ public class FindMyLocationActivity extends AppCompatActivity
     private static final String KEY_LOCATION = "location";
     private double currUserLatitude;
     private double currentUserLongitude;
-    private SetTimeOut timeOut;
+    private DatabaseHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +80,7 @@ public class FindMyLocationActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_find_my_location);
 
-        database = FirebaseDatabase.getInstance().getReference();
-        auth = FirebaseAuth.getInstance();
-
-        timeOut = new SetTimeOut();
+        dbHandler = new DatabaseHandler();
 
        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -111,6 +108,15 @@ public class FindMyLocationActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.back_to_logged_in) {
+            Intent intent = new Intent(FindMyLocationActivity.this, LoggedInActivity.class);
+            startActivity(intent);
+        }
+        return true;
+    }
+
+    @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
@@ -121,7 +127,6 @@ public class FindMyLocationActivity extends AppCompatActivity
         getDeviceLocation();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //Location Permission already granted
             mFusedLocationProviderClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
@@ -129,7 +134,7 @@ public class FindMyLocationActivity extends AppCompatActivity
                             if (location != null) {
                                 currUserLatitude = location.getLatitude();
                                 currentUserLongitude = location.getLongitude();
-                                updateUserData(currUserLatitude, currentUserLongitude);
+                                dbHandler.updateUserCoords(currUserLatitude, currentUserLongitude);
                                 Toast.makeText(FindMyLocationActivity.this, "Location successfuly updated", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -218,19 +223,5 @@ public class FindMyLocationActivity extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
-    }
-
-    public void updateUserData(double latitude, double longitude) {
-        FirebaseUser user = auth.getCurrentUser();
-        String uId = user.getUid();
-
-        Map<String, Object> updates = new HashMap<>();
-
-        updates.put("Users/" + uId + "/" + "latitude", latitude);
-        updates.put("Users/" + uId + "/" + "longitude", longitude);
-
-
-        database.updateChildren(updates);
-
     }
 }

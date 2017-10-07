@@ -5,6 +5,7 @@ import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.UserLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -68,7 +69,8 @@ public class DatabaseHandler {
             currentUser.setPhoneNumber(ds.child(userId).getValue(User.class).getPhoneNumber());
             currentUser.setCarModel(ds.child(userId).getValue(User.class).getCarModel());
             currentUser.setSeatsAvailable(ds.child(userId).getValue(User.class).getSeatsAvailable());
-
+            currentUser.setLatitude(ds.child(userId).getValue(User.class).getLatitude());
+            currentUser.setLongitude(ds.child(userId).getValue(User.class).getLongitude());
         }
 
         return currentUser;
@@ -80,12 +82,10 @@ public class DatabaseHandler {
 
         Map<String, Object> updates = new HashMap<>();
 
-        updates.put("Users/" + uId + "/" + "UserLocation/" + "latitude", latitude);
-        updates.put("Users/" + uId + "/" + "UserLocation/" + "longitude", longitude);
-
+        updates.put("Users/" + uId + "/latitude", latitude);
+        updates.put("Users/" + uId + "/longitude", longitude);
 
         databaseReference.updateChildren(updates);
-
     }
 
     public void updateUserCarDetails(String car, String seatsAvailable) {

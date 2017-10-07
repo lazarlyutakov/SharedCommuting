@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.UserLocation;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.SetTimeOut;
 import com.google.android.gms.location.FusedLocationProviderClient;

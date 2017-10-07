@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
@@ -55,7 +56,6 @@ public class UserProfilFragment extends Fragment {
         email = (TextView) root.findViewById(R.id.signed_user_email);
         car = (TextView) root.findViewById(R.id.signed_user_car);
         seats = (TextView) root.findViewById(R.id.signed_seats_available);
-
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

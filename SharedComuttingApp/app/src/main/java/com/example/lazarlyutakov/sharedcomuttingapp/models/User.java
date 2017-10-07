@@ -18,6 +18,8 @@ public class User {
     private String email;
     private String carModel;
     private String seatsAvailable;
+    private double latitude;
+    private double longitude;
 
     public User() {
 
@@ -37,7 +39,8 @@ public class User {
         setPhoneNumber(phoneNumber);
     }
 
-    public User(String username, String password, String firstName, String lastName, String phoneNumber, String email, String carModel,
+    public User(String username, String password, String firstName, String lastName, String phoneNumber, String email,
+                String carModel,
                 String seatsAvailable) {
         setUsername(username);
         setPassword(password);
@@ -49,7 +52,22 @@ public class User {
         setSeatsAvailable(seatsAvailable);
     }
 
-
+    public User(String username, String password, String firstName, String lastName, String phoneNumber, String email,
+                String carModel,
+                String seatsAvailable,
+                double latitude,
+                double longitude) {
+        setUsername(username);
+        setPassword(password);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
+        setCarModel(carModel);
+        setSeatsAvailable(seatsAvailable);
+        setLatitude(latitude);
+        setLongitude(longitude);
+    }
 
     public String getUsername() {
         return username;
@@ -113,5 +131,21 @@ public class User {
 
     public void setSeatsAvailable(String seatsAvailable) {
         this.seatsAvailable = seatsAvailable;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

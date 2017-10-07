@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="50dp">
 
 
         <TextView
@@ -62,6 +63,12 @@
 
     <FrameLayout
         android:id="@+id/offer_ride_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/need_ride_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </FrameLayout>

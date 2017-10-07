@@ -3,45 +3,16 @@
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="60dp"
-    tools:context="com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment">
+    android:paddingTop="40dp"
+    tools:context="com.example.lazarlyutakov.sharedcomuttingapp.fragments.NeedRideFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <AutoCompleteTextView
-                android:id="@+id/et_car"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_car"
-                android:inputType="text"
-                android:maxLines="1" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <AutoCompleteTextView
-                android:id="@+id/et_available_seats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_available_seats"
-                android:inputType="text"
-                android:maxLines="1"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_set_location_offer"
+            android:id="@+id/btn_set_location_need"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -56,8 +27,22 @@
             fancy:fb_text="Set your location"
             fancy:fb_textColor="#FFFFFF" />
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/et_set_radius_of_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_set_search_radius"
+                android:inputType="text"
+                android:maxLines="1"/>
+
+        </android.support.design.widget.TextInputLayout>
+
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_offer_submit"
+            android:id="@+id/btn_search_for_offers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
@@ -69,8 +54,9 @@
             fancy:fb_defaultColor="#7ab800"
             fancy:fb_focusColor="#9bd823"
             fancy:fb_radius="30dp"
-            fancy:fb_text="Submit"
+            fancy:fb_text="Search"
             fancy:fb_textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </FrameLayout>

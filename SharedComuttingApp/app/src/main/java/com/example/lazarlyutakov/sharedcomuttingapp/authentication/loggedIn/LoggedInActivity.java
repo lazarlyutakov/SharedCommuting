@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.NeedRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
@@ -33,6 +34,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private FancyButton btnOffer;
     private FancyButton btnNeed;
     private Fragment offerRideFragment;
+    private Fragment needRideFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +89,11 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         offerRideFragment = new OfferRideFragment();
+        needRideFragment = new NeedRideFragment();
 
         switch (view.getId()) {
             case R.id.btn_need_ride :
-                /*Intent regIntent = new Intent(this, RegisterActivity.class);
-                startActivity(regIntent);*/
+                changeFragment(R.id.need_ride_fragment, needRideFragment);
                 break;
             case R.id.btn_offer_ride:
                 changeFragment(R.id.offer_ride_fragment, offerRideFragment);

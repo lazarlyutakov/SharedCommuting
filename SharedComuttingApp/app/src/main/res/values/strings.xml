@@ -9,8 +9,6 @@
     <string name="prompt_first_name">First name</string>
     <string name="prompt_last_name">Last name</string>
     <string name="prompt_phone_number">Phone number</string>
-    <string name="prompt_car">Car model</string>
-    <string name="prompt_available_seats">Seats available</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -20,6 +18,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to find / offer transport -->
+    <string name="prompt_car">Car model</string>
+    <string name="prompt_available_seats">Seats available</string>
+    <string name="prompt_set_search_radius">Set radius of search</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

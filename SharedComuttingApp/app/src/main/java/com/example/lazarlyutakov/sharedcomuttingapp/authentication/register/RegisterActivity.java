@@ -98,8 +98,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         createAccount(emailBox.getText().toString(), passwordBox.getText().toString());
-        Toast.makeText(this, emailBox.getText().toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "gotovo", Toast.LENGTH_SHORT).show();
     }
 
     private void createAccount(String email, String password) {

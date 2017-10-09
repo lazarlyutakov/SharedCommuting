@@ -2,6 +2,9 @@ package com.example.lazarlyutakov.sharedcomuttingapp.utils;
 
 import android.app.Activity;
 import android.location.Location;
+import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
@@ -12,10 +15,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 
 /**
  * Created by Lazar Lyutakov on 4.10.2017 г..
@@ -28,9 +37,10 @@ public class DatabaseHandler {
     private final FirebaseDatabase database;
     private final DatabaseReference databaseReference;
     private User myUser;
+    final List<User> usersWithCars = new ArrayList<>();
 
 
-    public DatabaseHandler(){
+    public DatabaseHandler() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
@@ -40,7 +50,7 @@ public class DatabaseHandler {
 
     }
 
-    public User getMyUser(){
+    public User getMyUser() {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -56,10 +66,10 @@ public class DatabaseHandler {
         return myUser;
     }
 
-    public User readUserData(DataSnapshot dataSnapshot){
+    public User readUserData(DataSnapshot dataSnapshot) {
         User currentUser = new User();
 
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
             currentUser.setFirstName(ds.child(userId).getValue(User.class).getFirstName());
             currentUser.setLastName(ds.child(userId).getValue(User.class).getLastName());
@@ -97,8 +107,38 @@ public class DatabaseHandler {
         updates.put("Users/" + uId + "/" + "carModel", car);
         updates.put("Users/" + uId + "/" + "seatsAvailable", seatsAvailable);
 
-
         databaseReference.updateChildren(updates);
+    }
 
+    public io.reactivex.Observable<List<User>> findUserWithCars() {
+        return io.reactivex.Observable.create(new ObservableOnSubscribe<List<User>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<User>> e) throws Exception {
+
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            for (DataSnapshot eachUser : ds.getChildren()) {
+                                User currUser = new User();
+                                String currUserCarModel = eachUser.getValue(User.class).getCarModel();
+
+                                if (currUserCarModel != null) {
+                                    currUser = eachUser.getValue(User.class);
+                                    usersWithCars.add(currUser);
+                                }
+                            }
+                        }
+                        e.onNext(usersWithCars);
+                        e.onComplete();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        databaseReference.removeEventListener(this);
+                    }
+                });
+            }
+        });
     }
 }

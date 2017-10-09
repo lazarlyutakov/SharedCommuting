@@ -1,20 +1,27 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.fragments;
 
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
-import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.Validator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +32,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import mehdi.sakout.fancybuttons.FancyButton;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NeedRideFragment extends Fragment implements View.OnClickListener {
 
 
@@ -35,6 +39,10 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
     private FancyButton btnSearchForOffers;
     private AutoCompleteTextView tvRadiusOfSearch;
     private DatabaseHandler dbHandler;
+    private FirebaseAuth auth;
+    private Validator validator;
+    private ListView lvNearbyDrivers;
+    private ArrayAdapter<User> driversAdapter;
 
     public NeedRideFragment() {
         // Required empty public constructor
@@ -47,35 +55,69 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_need_ride, container, false);
 
-        btnSetLocationNeed = (FancyButton)root.findViewById(R.id.btn_set_location_need);
-        btnSearchForOffers = (FancyButton)root.findViewById(R.id.btn_search_for_offers);
-        tvRadiusOfSearch = (AutoCompleteTextView)root.findViewById(R.id.et_set_radius_of_search);
+        btnSetLocationNeed = (FancyButton) root.findViewById(R.id.btn_set_location_need);
+        btnSearchForOffers = (FancyButton) root.findViewById(R.id.btn_search_for_offers);
+        tvRadiusOfSearch = (AutoCompleteTextView) root.findViewById(R.id.et_set_radius_of_search);
+        lvNearbyDrivers = (ListView) root.findViewById(R.id.lv_nearby_drivers);
+
+        auth = FirebaseAuth.getInstance();
 
         dbHandler = new DatabaseHandler();
+        validator = new Validator();
 
         btnSearchForOffers.setOnClickListener(this);
         btnSetLocationNeed.setOnClickListener(this);
+
+        driversAdapter = new ArrayAdapter<User>(getContext(), android.R.layout.simple_list_item_1) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView view = null;
+                if (convertView == null || !(convertView instanceof TextView)) {
+                    LayoutInflater viewInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    view = (TextView) viewInflater.inflate(android.R.layout.simple_list_item_1, null);
+                } else {
+                    view = (TextView) convertView;
+                }
+
+                view.setText(getItem(position).getFirstName());
+                // view.setText(getItem(position).getPhoneNumber());
+
+
+                return view;
+            }
+
+        };
+
+        lvNearbyDrivers.setAdapter(driversAdapter);
 
         return root;
     }
 
     @Override
     public void onClick(View view) {
+        if (validator.validateSearchDistance(tvRadiusOfSearch) == false) {
+            return;
+        }
         switch (view.getId()) {
-            case R.id.btn_search_for_offers :
-                Observable observable = dbHandler.findUserWithCars();
+            case R.id.btn_search_for_offers:
+                Double radius = Double.parseDouble(tvRadiusOfSearch.getText().toString());
+                final List<User> list = new ArrayList<>();
+                Observable observable = dbHandler.findNearbyDrivers(radius);
                 observable
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<List<User>>() {
                             @Override
                             public void accept(List<User> users) throws Exception {
-                                List<User> usrs = new ArrayList<User>();
-                                for(User item: users){
-                                    System.out.println("LLLLLLLLLLL + " + item.getLatitude());
+                                for (User usr : users) {
+                                    list.add(usr);
+                                    driversAdapter.add(usr);
                                 }
 
-                                System.out.println("LNJKLNJLNN " + users.size());
+                                btnSetLocationNeed.setVisibility(View.GONE);
+                                btnSearchForOffers.setVisibility(View.GONE);
+                                tvRadiusOfSearch.setVisibility(View.GONE);
                             }
                         });
 
@@ -88,8 +130,4 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void findNearbyDrivers(){
-        Double radius = Double.parseDouble(tvRadiusOfSearch.getText().toString());
-
-    }
 }

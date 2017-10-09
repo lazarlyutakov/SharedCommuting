@@ -1,11 +1,6 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.utils;
 
-import android.app.Activity;
-import android.location.Location;
-import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.UserLocation;
@@ -23,12 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-
-/**
- * Created by Lazar Lyutakov on 4.10.2017 г..
- */
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class DatabaseHandler {
 
@@ -36,9 +31,8 @@ public class DatabaseHandler {
     private final FirebaseAuth auth;
     private final FirebaseDatabase database;
     private final DatabaseReference databaseReference;
-    private User myUser;
     final List<User> usersWithCars = new ArrayList<>();
-
+    User loggedUser;
 
     public DatabaseHandler() {
         auth = FirebaseAuth.getInstance();
@@ -46,24 +40,6 @@ public class DatabaseHandler {
         databaseReference = database.getReference();
         FirebaseUser user = auth.getCurrentUser();
         userId = user.getUid();
-
-
-    }
-
-    public User getMyUser() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                myUser = readUserData(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return myUser;
     }
 
     public User readUserData(DataSnapshot dataSnapshot) {
@@ -110,14 +86,20 @@ public class DatabaseHandler {
         databaseReference.updateChildren(updates);
     }
 
-    public io.reactivex.Observable<List<User>> findUserWithCars() {
+    public io.reactivex.Observable<List<User>> findNearbyDrivers(final double radius) {
         return io.reactivex.Observable.create(new ObservableOnSubscribe<List<User>>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<List<User>> e) throws Exception {
+                final List<User> nearbyDrivers = new ArrayList<User>();
+
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        loggedUser = readUserData(dataSnapshot);
+                        double latLogged = loggedUser.getLatitude();
+                        double longLogged = loggedUser.getLongitude();
+
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             for (DataSnapshot eachUser : ds.getChildren()) {
                                 User currUser = new User();
@@ -125,11 +107,19 @@ public class DatabaseHandler {
 
                                 if (currUserCarModel != null) {
                                     currUser = eachUser.getValue(User.class);
-                                    usersWithCars.add(currUser);
+
+                                    double latCurr = currUser.getLatitude();
+                                    double longCurr = currUser.getLongitude();
+
+                                    double distanceBetweenEsers = distance(latLogged, latCurr, longLogged, longCurr);
+
+                                    if(distanceBetweenEsers <= radius){
+                                        nearbyDrivers.add(currUser);
+                                    }
                                 }
                             }
                         }
-                        e.onNext(usersWithCars);
+                        e.onNext(nearbyDrivers);
                         e.onComplete();
                     }
 
@@ -140,5 +130,23 @@ public class DatabaseHandler {
                 });
             }
         });
+    }
+
+
+    public static double distance(double lat1, double lat2, double lon1, double lon2) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+
+        distance = Math.pow(distance, 2);
+
+        return Math.sqrt(distance);
     }
 }

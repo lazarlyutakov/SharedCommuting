@@ -22,6 +22,7 @@ public class Validator {
     private final String USERNAME_NEEDED = "Please, enter username!";
     private final String NAME_NEEDED = "Please, enter first / last name!";
     private final String PHONE_NUMBER_NEEDED = "Please, enter telephone number!";
+    private final String SEARCH_RADIUS_NEEDED = "Please, enter radius of search!";
 
     private final String PASSWORD_NOT_LONG_ENOUGH = "Password must be at least 6 chars long!";
     private final String USERNAME_NOT_LONG_ENOUGH = "Username must be at least 3 chars long!";
@@ -33,6 +34,16 @@ public class Validator {
 
     public Validator(){
 
+    }
+
+    public boolean validateSearchDistance(TextView textView){
+        Matcher matcher = pattern.matcher(textView.getText().toString());
+
+        if(textView.getText().length() == 0 || textView.getText().toString() == null){
+            textView.setError(SEARCH_RADIUS_NEEDED);
+            return false;
+        }
+        return true;
     }
 
     public boolean validatePassword(TextView textView){

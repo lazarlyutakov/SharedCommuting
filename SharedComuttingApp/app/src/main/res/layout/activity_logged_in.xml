@@ -74,6 +74,12 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/nearby_drivers_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/user_profil_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

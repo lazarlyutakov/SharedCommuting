@@ -10,18 +10,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class UserProfilFragment extends Fragment {
-
 
     private DatabaseReference databaseReference;
     private FirebaseDatabase database;
@@ -33,6 +31,7 @@ public class UserProfilFragment extends Fragment {
     private TextView car;
     private TextView seats;
     private DatabaseHandler dbReader;
+    private User currUser;
 
     public UserProfilFragment() {
         // Required empty public constructor
@@ -79,4 +78,5 @@ public class UserProfilFragment extends Fragment {
         });
         return root;
     }
+
 }

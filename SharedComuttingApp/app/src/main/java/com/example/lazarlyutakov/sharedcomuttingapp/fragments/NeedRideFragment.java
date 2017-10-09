@@ -1,5 +1,6 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.fragments;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.DriverDetailsActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
@@ -32,7 +35,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import mehdi.sakout.fancybuttons.FancyButton;
 
-public class NeedRideFragment extends Fragment implements View.OnClickListener {
+public class NeedRideFragment extends Fragment implements  View.OnClickListener, AdapterView.OnItemClickListener {
 
 
     private FancyButton btnSetLocationNeed;
@@ -43,6 +46,12 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
     private Validator validator;
     private ListView lvNearbyDrivers;
     private ArrayAdapter<User> driversAdapter;
+    private TextView tvDriverFirstName;
+    private TextView tvDriverLastName;
+    private TextView tvDriverPhoneNumber;
+    private TextView tvDriverCar;
+    private TextView tvDriverSeatsAvailable;
+    final private ArrayList<User> list = new ArrayList<>();
 
     public NeedRideFragment() {
         // Required empty public constructor
@@ -80,9 +89,7 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
                     view = (TextView) convertView;
                 }
 
-                view.setText(getItem(position).getFirstName());
-                // view.setText(getItem(position).getPhoneNumber());
-
+                view.setText(getItem(position).getUsername());
 
                 return view;
             }
@@ -90,6 +97,7 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
         };
 
         lvNearbyDrivers.setAdapter(driversAdapter);
+        lvNearbyDrivers.setOnItemClickListener(this);
 
         return root;
     }
@@ -102,7 +110,7 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.btn_search_for_offers:
                 Double radius = Double.parseDouble(tvRadiusOfSearch.getText().toString());
-                final List<User> list = new ArrayList<>();
+
                 Observable observable = dbHandler.findNearbyDrivers(radius);
                 observable
                         .subscribeOn(Schedulers.io())
@@ -130,4 +138,15 @@ public class NeedRideFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        User driverClicked = list.get(i);
+
+        Intent intent = new Intent(getActivity(), DriverDetailsActivity.class);
+        intent.putExtra(DriverDetailsActivity.DRIVER_DETAILS, driverClicked);
+        getActivity().startActivity(intent);
+
+    }
+
 }
+

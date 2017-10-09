@@ -30,11 +30,11 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseDatabase database;
     private String fName;
     private String lName;
-    private Fragment userProfilFragment;
     private FancyButton btnOffer;
     private FancyButton btnNeed;
     private Fragment offerRideFragment;
     private Fragment needRideFragment;
+    private UserProfilFragment userProfilFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

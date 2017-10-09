@@ -2,6 +2,7 @@ package com.example.lazarlyutakov.sharedcomuttingapp.models;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import java.util.Map;
  * Created by Lazar Lyutakov on 2.10.2017 г..
  */
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String firstName;
     private String lastName;

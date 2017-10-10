@@ -6,7 +6,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.ListContactsActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -96,8 +99,8 @@ public class DrawerCreator {
 
                         }
                         if(contacts.isSelected()){
-                            Toast.makeText(activity, "clicked item 3", Toast.LENGTH_SHORT).show();
-
+                            Intent intent = new Intent(activity, ListContactsActivity.class);
+                            activity.startActivity(intent);
                         }
                         if(logout.isSelected()){
                             auth.signOut();

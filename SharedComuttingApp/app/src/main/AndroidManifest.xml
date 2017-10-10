@@ -32,7 +32,8 @@
         <activity android:name=".authentication.loggedIn.LoggedInActivity" />
         <activity android:name=".authentication.login.LoginActivity" />
         <activity android:name=".location.FindMyLocationActivity" />
-        <activity android:name=".authentication.loggedIn.DriverDetailsActivity"></activity>
+        <activity android:name=".authentication.loggedIn.DriverDetailsActivity" />
+        <activity android:name=".authentication.loggedIn.ListContactsActivity"></activity>
     </application>
 
 </manifest>

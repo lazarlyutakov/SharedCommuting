@@ -28,6 +28,8 @@ public class DatabaseHandler {
     private final DatabaseReference databaseReference;
     final List<User> usersWithCars = new ArrayList<>();
     User loggedUser;
+    private Map<String, Contact> contacts;
+    private ArrayList contactNames;
 
     public DatabaseHandler() {
         auth = FirebaseAuth.getInstance();
@@ -126,13 +128,48 @@ public class DatabaseHandler {
 
                                     double distanceBetweenEsers = distance(latLogged, latCurr, longLogged, longCurr);
 
-                                    if(distanceBetweenEsers <= radius && distanceBetweenEsers != 0){
+                                    if (distanceBetweenEsers <= radius && distanceBetweenEsers != 0) {
                                         nearbyDrivers.add(currUser);
                                     }
                                 }
                             }
                         }
                         e.onNext(nearbyDrivers);
+                        e.onComplete();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        databaseReference.removeEventListener(this);
+                    }
+                });
+            }
+        });
+    }
+
+    public io.reactivex.Observable<List<String>> findCurrUserContacts() {
+        return io.reactivex.Observable.create(new ObservableOnSubscribe<List<String>>() {
+            @Override
+            public void subscribe(@NonNull final ObservableEmitter<List<String>> e) throws Exception {
+                final List<String> nearbyDrivers = new ArrayList<String>();
+
+
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        loggedUser = readUserData(dataSnapshot);
+                        contacts = loggedUser.getContacts();
+
+                        contactNames = new ArrayList();
+
+                        Object[] keys = contacts.keySet().toArray();
+
+                        for(int i = 0; i < keys.length; i++){
+                            String name = contacts.get(keys[i]).getContactName();
+                            contactNames.add(name);
+                        }
+
+                        e.onNext(contactNames);
                         e.onComplete();
                     }
 

@@ -1,21 +1,8 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.models;
 
-import android.support.annotation.NonNull;
-
-import com.google.firebase.database.Exclude;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-/**
- * Created by Lazar Lyutakov on 2.10.2017 г..
- */
 
 public class User implements Serializable {
     private String username;

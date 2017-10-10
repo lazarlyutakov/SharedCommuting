@@ -84,7 +84,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                databaseReference.removeEventListener(this);
             }
         });
     }

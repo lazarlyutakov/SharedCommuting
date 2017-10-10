@@ -53,6 +53,7 @@ public class DatabaseHandler {
                 currentUser.setSeatsAvailable(ds.getValue(User.class).getSeatsAvailable());
                 currentUser.setLatitude(ds.getValue(User.class).getLatitude());
                 currentUser.setLongitude(ds.getValue(User.class).getLongitude());
+                currentUser.setContacts(ds.getValue(User.class).getContacts());
             }
         }
         return currentUser;

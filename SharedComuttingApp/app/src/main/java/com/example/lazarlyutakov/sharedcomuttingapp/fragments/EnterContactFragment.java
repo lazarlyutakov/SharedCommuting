@@ -40,8 +40,6 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
     private User currDriver;
     private Validator validator;
     private Contact contact;
-    private FirebaseAuth auth;
-    private DatabaseReference databaseReference;
     private DatabaseHandler dbHandler;
     private User loggedUser;
 
@@ -59,8 +57,6 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         validator = new Validator();
         contact = new Contact();
 
-        auth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         dbHandler = new DatabaseHandler();
 
         etEnterContactName = (AutoCompleteTextView)root.findViewById(R.id.et_enter_contact_name);
@@ -83,29 +79,7 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         final String contactName = etEnterContactName.getText().toString();
         contact.setContactName(contactName);
         contact.setDriver(currDriver);
-        FirebaseUser fbUser = auth.getCurrentUser();
-        String uId = fbUser.getUid();
 
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                loggedUser = dbHandler.readUserData(dataSnapshot);
-                Map<String, Contact> jj = loggedUser.getContacts();
-                // contact.setOwner(loggedUser);
-                jj.put(contactName, contact);
-                System.out.println("BBBBBBBBBBBB " + jj.size());
-                dbHandler.updateUserContacts(contact);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                databaseReference.removeEventListener(this);
-            }
-        });
-
-
-        Toast.makeText(getContext(), currDriver.getFirstName(), Toast.LENGTH_SHORT).show();
+        dbHandler.updateUserContacts(contact);
     }
 }

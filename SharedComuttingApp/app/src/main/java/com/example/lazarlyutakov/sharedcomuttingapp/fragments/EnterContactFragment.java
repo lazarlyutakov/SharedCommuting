@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Map;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
 /**
@@ -84,16 +86,17 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         FirebaseUser fbUser = auth.getCurrentUser();
         String uId = fbUser.getUid();
 
-        //databaseReference.child("Contacts").child(uId).setValue(contact);
 
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 loggedUser = dbHandler.readUserData(dataSnapshot);
-                contact.setOwner(loggedUser);
-                loggedUser.getContacts().put(contactName, contact);
+                Map<String, Contact> jj = loggedUser.getContacts();
+                // contact.setOwner(loggedUser);
+                jj.put(contactName, contact);
+                System.out.println("BBBBBBBBBBBB " + jj.size());
                 dbHandler.updateUserContacts(contact);
+
             }
 
             @Override

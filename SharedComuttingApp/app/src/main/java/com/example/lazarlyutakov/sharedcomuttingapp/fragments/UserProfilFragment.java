@@ -69,11 +69,13 @@ public class UserProfilFragment extends Fragment {
                     car.setText(dbReader.readUserData(dataSnapshot).getCarModel());
                     seats.setText(dbReader.readUserData(dataSnapshot).getSeatsAvailable());
                 }
+
+               System.out.println("AAAAAAAAAAAAAAAAA " + dbReader.readUserData(dataSnapshot).getContacts().size());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                databaseReference.removeEventListener(this);
             }
         });
         return root;

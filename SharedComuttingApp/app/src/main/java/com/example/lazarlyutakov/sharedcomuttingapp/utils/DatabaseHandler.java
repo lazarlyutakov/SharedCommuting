@@ -61,15 +61,15 @@ public class DatabaseHandler {
     public void updateUserContacts(Contact contact) {
         FirebaseUser user = auth.getCurrentUser();
         String uId = user.getUid();
-       // String key = database.getReference().child("Contacts").push().getKey();
+        String key = database.getReference().child("Contacts").push().getKey();
         Contact newContact = new Contact(contact.getContactName(), contact.getDriver());
 
         Map<String, Object> contactValues = newContact.toMap();
 
         Map<String, Object> updates = new HashMap<>();
 
-        updates.put("Users/" + uId + "/" + "contacts", contactValues);
-        updates.put("Contacts/" + uId, contactValues);
+        updates.put("Users/" + uId + "/" + "contacts/" + key, contactValues);
+        updates.put("Contacts/" + key, contactValues);
 
         databaseReference.updateChildren(updates);
     }

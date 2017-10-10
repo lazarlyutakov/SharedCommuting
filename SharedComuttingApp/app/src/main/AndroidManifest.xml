@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCS9toGWihXjQLCMZYDWKfJChb88j6ComM" />
@@ -28,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".authentication.register.RegisterActivity" />
         <activity android:name=".authentication.loggedIn.LoggedInActivity" />
         <activity android:name=".authentication.login.LoginActivity" />
@@ -35,5 +37,18 @@
         <activity android:name=".authentication.loggedIn.DriverDetailsActivity" />
         <activity android:name=".authentication.loggedIn.ListContactsActivity"></activity>
     </application>
+
+    <service
+        android:name="com.android.notification.MyFirebaseMessagingService">
+        <intent-filter>
+            <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+    </service>
+    <service
+        android:name="com.android.notification.MyFirebaseInstanceIDService">
+        <intent-filter>
+            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        </intent-filter>
+    </service>
 
 </manifest>

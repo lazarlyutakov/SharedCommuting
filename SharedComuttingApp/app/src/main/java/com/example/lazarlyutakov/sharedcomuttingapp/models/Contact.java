@@ -1,5 +1,8 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Lazar Lyutakov on 10.10.2017 г..
  */
@@ -7,15 +10,23 @@ package com.example.lazarlyutakov.sharedcomuttingapp.models;
 public class Contact {
 
     private String contactName;
-    private User user;
+    private User owner;
+    private User driver;
+
 
     public Contact(){
 
     }
 
-    public Contact(String contactName, User user){
+    public Contact(String contactName, User driver){
         setContactName(contactName);
-        setUser(user);
+        setDriver(driver);
+    }
+
+    public Contact(String contactName, User owner, User driver){
+        setContactName(contactName);
+        setOwner(owner);
+        setDriver(driver);
     }
 
     public String getContactName() {
@@ -26,11 +37,29 @@ public class Contact {
         this.contactName = contactName;
     }
 
-    public User getUser() {
-        return user;
+
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public User getDriver() {
+        return driver;
+    }
+
+    public void setDriver(User driver) {
+        this.driver = driver;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("contactName", contactName);
+       // result.put("owner", owner);
+        result.put("driver", driver);
+
+        return result;
     }
 }

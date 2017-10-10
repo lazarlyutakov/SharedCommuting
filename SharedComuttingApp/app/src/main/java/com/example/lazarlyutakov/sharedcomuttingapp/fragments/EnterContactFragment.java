@@ -11,8 +11,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.DriverDetailsActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.Contact;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.Validator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -26,6 +37,11 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
     private FancyButton btnEnterContact;
     private User currDriver;
     private Validator validator;
+    private Contact contact;
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
+    private DatabaseHandler dbHandler;
+    private User loggedUser;
 
     public EnterContactFragment() {
         // Required empty public constructor
@@ -39,6 +55,11 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         View root = inflater.inflate(R.layout.fragment_enter_contact, container, false);
 
         validator = new Validator();
+        contact = new Contact();
+
+        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        dbHandler = new DatabaseHandler();
 
         etEnterContactName = (AutoCompleteTextView)root.findViewById(R.id.et_enter_contact_name);
         btnEnterContact = (FancyButton)root.findViewById(R.id.btn_enter_contact);
@@ -57,7 +78,31 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         if(validator.validateContact(etEnterContactName) == false){
             return;
         }
-        String contactName = etEnterContactName.getText().toString();
+        final String contactName = etEnterContactName.getText().toString();
+        contact.setContactName(contactName);
+        contact.setDriver(currDriver);
+        FirebaseUser fbUser = auth.getCurrentUser();
+        String uId = fbUser.getUid();
+
+        //databaseReference.child("Contacts").child(uId).setValue(contact);
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                loggedUser = dbHandler.readUserData(dataSnapshot);
+                contact.setOwner(loggedUser);
+                loggedUser.getContacts().put(contactName, contact);
+                dbHandler.updateUserContacts(contact);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                databaseReference.removeEventListener(this);
+            }
+        });
+
+
         Toast.makeText(getContext(), currDriver.getFirstName(), Toast.LENGTH_SHORT).show();
     }
 }

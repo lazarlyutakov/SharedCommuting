@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Lazar Lyutakov on 2.10.2017 г..
@@ -23,7 +24,7 @@ public class User implements Serializable {
     private String seatsAvailable;
     private double latitude;
     private double longitude;
-    private List<Contact> contacts;
+    private Map<String, Object> contacts = new HashMap<String, Object>();
 
     public User() {
 
@@ -41,7 +42,6 @@ public class User implements Serializable {
         setLastName(lastName);
         setEmail(email);
         setPhoneNumber(phoneNumber);
-        contacts = new ArrayList<Contact>();
     }
 
     public User(String username, String password, String firstName, String lastName, String phoneNumber, String email,
@@ -154,11 +154,11 @@ public class User implements Serializable {
         this.longitude = longitude;
     }
 
-    public List<Contact> getContacts() {
+    public Map<String, Object> getContacts() {
         return contacts;
     }
 
-    public void setContacts(List<Contact> contacts) {
+    public void setContacts(Map<String, Object> contacts) {
         this.contacts = contacts;
     }
 }

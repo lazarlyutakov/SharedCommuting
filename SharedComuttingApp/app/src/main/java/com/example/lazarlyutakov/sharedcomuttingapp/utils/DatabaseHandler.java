@@ -2,6 +2,7 @@ package com.example.lazarlyutakov.sharedcomuttingapp.utils;
 
 import android.support.annotation.NonNull;
 
+import com.example.lazarlyutakov.sharedcomuttingapp.models.Contact;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,21 +40,38 @@ public class DatabaseHandler {
     public User readUserData(DataSnapshot dataSnapshot) {
         User currentUser = new User();
 
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+        for (DataSnapshot ds : dataSnapshot.child("Users").getChildren()) {
 
-            currentUser.setFirstName(ds.child(userId).getValue(User.class).getFirstName());
-            currentUser.setLastName(ds.child(userId).getValue(User.class).getLastName());
-            currentUser.setUsername(ds.child(userId).getValue(User.class).getUsername());
-            currentUser.setPassword(ds.child(userId).getValue(User.class).getPassword());
-            currentUser.setEmail(ds.child(userId).getValue(User.class).getEmail());
-            currentUser.setPhoneNumber(ds.child(userId).getValue(User.class).getPhoneNumber());
-            currentUser.setCarModel(ds.child(userId).getValue(User.class).getCarModel());
-            currentUser.setSeatsAvailable(ds.child(userId).getValue(User.class).getSeatsAvailable());
-            currentUser.setLatitude(ds.child(userId).getValue(User.class).getLatitude());
-            currentUser.setLongitude(ds.child(userId).getValue(User.class).getLongitude());
+            if (ds.getKey().equals(userId)) {
+                currentUser.setFirstName(ds.getValue(User.class).getFirstName());
+                currentUser.setLastName(ds.getValue(User.class).getLastName());
+                currentUser.setUsername(ds.getValue(User.class).getUsername());
+                currentUser.setPassword(ds.getValue(User.class).getPassword());
+                currentUser.setEmail(ds.getValue(User.class).getEmail());
+                currentUser.setPhoneNumber(ds.getValue(User.class).getPhoneNumber());
+                currentUser.setCarModel(ds.getValue(User.class).getCarModel());
+                currentUser.setSeatsAvailable(ds.getValue(User.class).getSeatsAvailable());
+                currentUser.setLatitude(ds.getValue(User.class).getLatitude());
+                currentUser.setLongitude(ds.getValue(User.class).getLongitude());
+            }
         }
-
         return currentUser;
+    }
+
+    public void updateUserContacts(Contact contact) {
+        FirebaseUser user = auth.getCurrentUser();
+        String uId = user.getUid();
+       // String key = database.getReference().child("Contacts").push().getKey();
+        Contact newContact = new Contact(contact.getContactName(), contact.getDriver());
+
+        Map<String, Object> contactValues = newContact.toMap();
+
+        Map<String, Object> updates = new HashMap<>();
+
+        updates.put("Users/" + uId + "/" + "contacts", contactValues);
+        updates.put("Contacts/" + uId, contactValues);
+
+        databaseReference.updateChildren(updates);
     }
 
     public void updateUserCoords(double latitude, double longitude) {
@@ -107,7 +125,7 @@ public class DatabaseHandler {
 
                                     double distanceBetweenEsers = distance(latLogged, latCurr, longLogged, longCurr);
 
-                                    if(distanceBetweenEsers <= radius){
+                                    if(distanceBetweenEsers <= radius && distanceBetweenEsers != 0){
                                         nearbyDrivers.add(currUser);
                                     }
                                 }

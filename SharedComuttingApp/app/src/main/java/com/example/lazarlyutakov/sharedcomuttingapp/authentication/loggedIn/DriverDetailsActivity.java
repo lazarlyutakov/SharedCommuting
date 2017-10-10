@@ -36,9 +36,10 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     private DatabaseReference databaseReference;
     private String fName;
     private String lName;
-    private Button btnEnterContact;
-    private Fragment enterContactFragment;
+    private Button btnAddContact;
+    private EnterContactFragment enterContactFragment;
     private LinearLayout llDriversDetails;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
         Intent intent = getIntent();
 
-        User user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
+        user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
 
         tvDriverFirstName = (TextView) findViewById(R.id.driver_first_name);
         tvDriverLastName = (TextView) findViewById(R.id.driver_last_name);
@@ -55,7 +56,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverEmail = (TextView) findViewById(R.id.driver_email);
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
-        btnEnterContact = (Button)findViewById(R.id.btn_add_driver_to_contacts);
+        btnAddContact = (Button)findViewById(R.id.btn_add_driver_to_contacts);
         llDriversDetails = (LinearLayout)findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();
@@ -70,7 +71,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverCar.setText(user.getCarModel());
         tvDriverSeatsAvailable.setText(user.getSeatsAvailable());
 
-        btnEnterContact.setOnClickListener(this);
+        btnAddContact.setOnClickListener(this);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -91,6 +92,10 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         enterContactFragment = new EnterContactFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("current driver", user);
+        enterContactFragment.setArguments(bundle);
 
         llDriversDetails.setVisibility(View.GONE);
 

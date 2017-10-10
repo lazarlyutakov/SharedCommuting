@@ -3,7 +3,9 @@ package com.example.lazarlyutakov.sharedcomuttingapp.models;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +23,7 @@ public class User implements Serializable {
     private String seatsAvailable;
     private double latitude;
     private double longitude;
+    private List<Contact> contacts;
 
     public User() {
 
@@ -38,6 +41,7 @@ public class User implements Serializable {
         setLastName(lastName);
         setEmail(email);
         setPhoneNumber(phoneNumber);
+        contacts = new ArrayList<Contact>();
     }
 
     public User(String username, String password, String firstName, String lastName, String phoneNumber, String email,
@@ -148,5 +152,13 @@ public class User implements Serializable {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 }

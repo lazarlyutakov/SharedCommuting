@@ -23,6 +23,8 @@ public class Validator {
     private final String NAME_NEEDED = "Please, enter first / last name!";
     private final String PHONE_NUMBER_NEEDED = "Please, enter telephone number!";
     private final String SEARCH_RADIUS_NEEDED = "Please, enter radius of search!";
+    private final String CONTACTNAME_NEEDED = "Please, enter contact name!";
+
 
     private final String PASSWORD_NOT_LONG_ENOUGH = "Password must be at least 6 chars long!";
     private final String USERNAME_NOT_LONG_ENOUGH = "Username must be at least 3 chars long!";
@@ -78,6 +80,14 @@ public class Validator {
             textView.setError(USERNAME_CONTAINS_FORBIDDEN_CHARS);
             return false;
         }*/
+        return true;
+    }
+
+    public boolean validateContact(TextView textView){
+        if(textView.getText().length() == 0 || textView.getText().toString() == null){
+            textView.setError(CONTACTNAME_NEEDED);
+            return false;
+        }
         return true;
     }
 

@@ -28,13 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-
 
 public class ListContactsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -43,10 +36,10 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
     private DatabaseReference databaseReference;
     private String fName;
     private String lName;
-    private ArrayAdapter<String> contactsAdapter;
+    private ArrayAdapter<Contact> contactsAdapter;
     private ListView lvListedContacts;
     private Map<String, Contact> contacts;
-    private ArrayList contactNames = new ArrayList();
+    private List<Contact> contactList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,32 +52,47 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
 
         lvListedContacts = (ListView)findViewById(R.id.lv_list_of_contacts);
 
-        contactsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        contactsAdapter = new ArrayAdapter<Contact>(this, android.R.layout.simple_list_item_1) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                TextView view = null;
+                if (convertView == null || !(convertView instanceof TextView)) {
+                    LayoutInflater viewInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    view = (TextView) viewInflater.inflate(android.R.layout.simple_list_item_1, null);
+                } else {
+                    view = (TextView) convertView;
+                }
+
+                view.setText(getItem(position).getContactName());
+
+                return view;
+            }
+        };
+
 
         final DatabaseHandler dbHandler = new DatabaseHandler();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                User currUser = dbHandler.readUserData(dataSnapshot);
                 fName = dbHandler.readUserData(dataSnapshot).getFirstName();
                 lName = dbHandler.readUserData(dataSnapshot).getLastName();
                 DrawerCreator drawer = new DrawerCreator(ListContactsActivity.this, auth, fName, lName);
                 drawer.createDrawer(ListContactsActivity.this);
 
-                Observable observable = dbHandler.findCurrUserContacts();
-                observable
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<List<String>>() {
-                            @Override
-                            public void accept(List<String> names) throws Exception {
-                                for (String name : names) {
-                                    contactNames.add(name);
-                                }
+                contacts = currUser.getContacts();
+                Object[] keys = contacts.keySet().toArray();
 
-                                contactsAdapter.addAll(contactNames);
-                            }
-                        });
+                for(int i = 0; i < keys.length; i++){
+                    Contact contact = contacts.get(keys[i]);
+                    contactList.add(contact);
+                }
+
+
+                contactsAdapter.addAll(contactList);
+
             }
 
             @Override

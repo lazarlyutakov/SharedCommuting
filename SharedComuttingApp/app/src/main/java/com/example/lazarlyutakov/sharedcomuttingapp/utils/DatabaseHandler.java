@@ -147,42 +147,6 @@ public class DatabaseHandler {
         });
     }
 
-    public io.reactivex.Observable<List<String>> findCurrUserContacts() {
-        return io.reactivex.Observable.create(new ObservableOnSubscribe<List<String>>() {
-            @Override
-            public void subscribe(@NonNull final ObservableEmitter<List<String>> e) throws Exception {
-                final List<String> nearbyDrivers = new ArrayList<String>();
-
-
-                databaseReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        loggedUser = readUserData(dataSnapshot);
-                        contacts = loggedUser.getContacts();
-
-                        contactNames = new ArrayList();
-
-                        Object[] keys = contacts.keySet().toArray();
-
-                        for(int i = 0; i < keys.length; i++){
-                            String name = contacts.get(keys[i]).getContactName();
-                            contactNames.add(name);
-                        }
-
-                        e.onNext(contactNames);
-                        e.onComplete();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        databaseReference.removeEventListener(this);
-                    }
-                });
-            }
-        });
-    }
-
-
     public static double distance(double lat1, double lat2, double lon1, double lon2) {
 
         final int R = 6371; // Radius of the earth

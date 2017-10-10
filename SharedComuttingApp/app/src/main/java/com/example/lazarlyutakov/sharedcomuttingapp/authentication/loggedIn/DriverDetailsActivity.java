@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.EnterContactFragment;
+import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.models.Contact;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
@@ -24,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 public class DriverDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String DRIVER_DETAILS = "Driver details";
+    public static final String CLICKED_CONTACT = "clicked contact";
 
     private TextView tvDriverFirstName;
     private TextView tvDriverLastName;
@@ -40,6 +44,8 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     private EnterContactFragment enterContactFragment;
     private LinearLayout llDriversDetails;
     private User user;
+    private Contact contact;
+    private Button btnSendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         Intent intent = getIntent();
 
         user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
+        contact = (Contact)intent.getSerializableExtra(CLICKED_CONTACT);
 
         tvDriverFirstName = (TextView) findViewById(R.id.driver_first_name);
         tvDriverLastName = (TextView) findViewById(R.id.driver_last_name);
@@ -57,6 +64,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
         btnAddContact = (Button)findViewById(R.id.btn_add_driver_to_contacts);
+        btnSendMessage = (Button)findViewById(R.id.btn_send_message);
         llDriversDetails = (LinearLayout)findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();
@@ -64,14 +72,28 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         databaseReference = database.getReference();
         final DatabaseHandler dbReader = new DatabaseHandler();
 
-        tvDriverFirstName.setText(user.getFirstName());
-        tvDriverLastName.setText(user.getLastName());
-        tvDriverPhoneNumber.setText(user.getPhoneNumber());
-        tvDriverEmail.setText(user.getEmail());
-        tvDriverCar.setText(user.getCarModel());
-        tvDriverSeatsAvailable.setText(user.getSeatsAvailable());
+        if(user != null) {
+            tvDriverFirstName.setText(user.getFirstName());
+            tvDriverLastName.setText(user.getLastName());
+            tvDriverPhoneNumber.setText(user.getPhoneNumber());
+            tvDriverEmail.setText(user.getEmail());
+            tvDriverCar.setText(user.getCarModel());
+            tvDriverSeatsAvailable.setText(user.getSeatsAvailable());
+        }
+        if(contact != null){
+            btnAddContact.setVisibility(View.GONE);
+            btnSendMessage.setVisibility(View.VISIBLE);
+
+            tvDriverFirstName.setText(contact.getDriver().getFirstName());
+            tvDriverLastName.setText(contact.getDriver().getLastName());
+            tvDriverPhoneNumber.setText(contact.getDriver().getPhoneNumber());
+            tvDriverEmail.setText(contact.getDriver().getEmail());
+            tvDriverCar.setText(contact.getDriver().getCarModel());
+            tvDriverSeatsAvailable.setText(contact.getDriver().getSeatsAvailable());
+        }
 
         btnAddContact.setOnClickListener(this);
+        btnSendMessage.setOnClickListener(this);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -91,18 +113,27 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        enterContactFragment = new EnterContactFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("current driver", user);
-        enterContactFragment.setArguments(bundle);
+        switch (view.getId()) {
+            case R.id.btn_add_driver_to_contacts :
+                enterContactFragment = new EnterContactFragment();
 
-        llDriversDetails.setVisibility(View.GONE);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("current driver", user);
+                enterContactFragment.setArguments(bundle);
 
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.enter_contact, enterContactFragment)
-                .commit();
+                llDriversDetails.setVisibility(View.GONE);
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.enter_contact, enterContactFragment)
+                        .commit();
+                break;
+            case R.id.btn_send_message:
+                Toast.makeText(this, "messsage", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
 
     }
 }

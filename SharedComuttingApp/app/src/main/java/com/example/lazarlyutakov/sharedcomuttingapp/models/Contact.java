@@ -1,5 +1,6 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * Created by Lazar Lyutakov on 10.10.2017 г..
  */
 
-public class Contact {
+public class Contact implements Serializable {
 
     private String contactName;
     private User owner;

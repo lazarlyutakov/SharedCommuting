@@ -1,6 +1,7 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -103,12 +104,17 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
         });
 
         lvListedContacts.setAdapter(contactsAdapter);
-       // lvListedContacts.setOnItemClickListener(ListContactsActivity.this);
+        lvListedContacts.setOnItemClickListener(ListContactsActivity.this);
 
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Contact clickedContact = contactList.get(i);
+
+        Intent intent = new Intent(this, DriverDetailsActivity.class);
+        intent.putExtra(DriverDetailsActivity.CLICKED_CONTACT, clickedContact);
+        startActivity(intent);
 
     }
 }

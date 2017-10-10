@@ -6,6 +6,7 @@
     tools:context="com.example.lazarlyutakov.sharedcomuttingapp.fragments.NeedRideFragment">
 
     <LinearLayout
+        android:id="@+id/ll_need_ride"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -55,14 +56,13 @@
             fancy:fb_radius="30dp"
             fancy:fb_text="Search"
             fancy:fb_textColor="#FFFFFF" />
-
-        <ListView
-            android:id="@+id/lv_nearby_drivers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </ListView>
-
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_nearby_drivers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
 
 </FrameLayout>

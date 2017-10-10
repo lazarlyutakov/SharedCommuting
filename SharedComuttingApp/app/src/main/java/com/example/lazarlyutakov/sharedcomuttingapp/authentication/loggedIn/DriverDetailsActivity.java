@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.fragments.EnterContactFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
@@ -17,7 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class DriverDetailsActivity extends AppCompatActivity {
+public class DriverDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String DRIVER_DETAILS = "Driver details";
 
@@ -32,6 +36,9 @@ public class DriverDetailsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String fName;
     private String lName;
+    private Button btnEnterContact;
+    private Fragment enterContactFragment;
+    private LinearLayout llDriversDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
         tvDriverEmail = (TextView) findViewById(R.id.driver_email);
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
+        btnEnterContact = (Button)findViewById(R.id.btn_add_driver_to_contacts);
+        llDriversDetails = (LinearLayout)findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -60,6 +69,8 @@ public class DriverDetailsActivity extends AppCompatActivity {
         tvDriverEmail.setText(user.getEmail());
         tvDriverCar.setText(user.getCarModel());
         tvDriverSeatsAvailable.setText(user.getSeatsAvailable());
+
+        btnEnterContact.setOnClickListener(this);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,6 +86,19 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        enterContactFragment = new EnterContactFragment();
+
+        llDriversDetails.setVisibility(View.GONE);
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.enter_contact, enterContactFragment)
+                .commit();
+
     }
 }
 

@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.DriverDetailsActivity">
 
     <LinearLayout
+        android:id="@+id/ll_driver_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -107,7 +109,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add to contacts"/>
+
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/enter_contact"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
 
 

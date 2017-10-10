@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,6 @@ import mehdi.sakout.fancybuttons.FancyButton;
 
 public class NeedRideFragment extends Fragment implements  View.OnClickListener, AdapterView.OnItemClickListener {
 
-
     private FancyButton btnSetLocationNeed;
     private FancyButton btnSearchForOffers;
     private AutoCompleteTextView tvRadiusOfSearch;
@@ -46,17 +46,12 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
     private Validator validator;
     private ListView lvNearbyDrivers;
     private ArrayAdapter<User> driversAdapter;
-    private TextView tvDriverFirstName;
-    private TextView tvDriverLastName;
-    private TextView tvDriverPhoneNumber;
-    private TextView tvDriverCar;
-    private TextView tvDriverSeatsAvailable;
     final private ArrayList<User> list = new ArrayList<>();
+    private LinearLayout llNeedRide;
 
     public NeedRideFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +63,7 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
         btnSearchForOffers = (FancyButton) root.findViewById(R.id.btn_search_for_offers);
         tvRadiusOfSearch = (AutoCompleteTextView) root.findViewById(R.id.et_set_radius_of_search);
         lvNearbyDrivers = (ListView) root.findViewById(R.id.lv_nearby_drivers);
+        llNeedRide = (LinearLayout)root.findViewById(R.id.ll_need_ride);
 
         auth = FirebaseAuth.getInstance();
 
@@ -93,7 +89,6 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
 
                 return view;
             }
-
         };
 
         lvNearbyDrivers.setAdapter(driversAdapter);
@@ -123,9 +118,7 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
                                     driversAdapter.add(usr);
                                 }
 
-                                btnSetLocationNeed.setVisibility(View.GONE);
-                                btnSearchForOffers.setVisibility(View.GONE);
-                                tvRadiusOfSearch.setVisibility(View.GONE);
+                                llNeedRide.setVisibility(View.GONE);
                             }
                         });
 
@@ -135,7 +128,6 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
                 startActivity(intentLocation);
                 break;
         }
-
     }
 
     @Override
@@ -145,8 +137,6 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
         Intent intent = new Intent(getActivity(), DriverDetailsActivity.class);
         intent.putExtra(DriverDetailsActivity.DRIVER_DETAILS, driverClicked);
         getActivity().startActivity(intent);
-
     }
-
 }
 

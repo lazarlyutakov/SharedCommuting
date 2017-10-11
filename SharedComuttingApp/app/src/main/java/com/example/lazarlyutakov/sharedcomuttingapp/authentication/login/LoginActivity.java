@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
 
         FirebaseUser currentUser = auth.getCurrentUser();
         updateUI(currentUser);
@@ -73,19 +72,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             FirebaseUser user = auth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Username / password incorrect!", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
-                        /*if (!task.isSuccessful()) {
-                            mStatusTextView.setText(R.string.auth_failed);
-                        }*/
-                       // hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
     private boolean validateForm() {
@@ -117,8 +109,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(this, LoggedInActivity.class);
             startActivity(intent);
 
-        } else {
-            Toast.makeText(this, "Please, sign in or register", Toast.LENGTH_SHORT).show();
         }
     }
 

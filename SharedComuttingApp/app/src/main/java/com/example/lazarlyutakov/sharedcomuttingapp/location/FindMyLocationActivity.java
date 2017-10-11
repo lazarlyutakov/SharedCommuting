@@ -149,6 +149,10 @@ public class FindMyLocationActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             mLastKnownLocation = task.getResult();
+                            if(mLastKnownLocation == null){
+                                Toast.makeText(FindMyLocationActivity.this, "Please, turn on your GPS", Toast.LENGTH_LONG).show();
+                                return;
+                            }
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));

@@ -76,7 +76,7 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
         btnSearchForOffers.setOnClickListener(this);
         btnSetLocationNeed.setOnClickListener(this);
 
-        driversAdapter = new ArrayAdapter<User>(getContext(), android.R.layout.simple_list_item_1) {
+        driversAdapter = new ArrayAdapter<User>(getActivity(), android.R.layout.simple_list_item_1) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

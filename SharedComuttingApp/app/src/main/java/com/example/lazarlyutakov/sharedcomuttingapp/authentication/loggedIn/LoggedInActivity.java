@@ -59,7 +59,6 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         final DatabaseHandler dbReader = new DatabaseHandler();
 
         dialog = new LoadingSpinnerGenerator(this);
-       // dialog.generateLoadingSpinner(this);
 
         dialog.show();
 

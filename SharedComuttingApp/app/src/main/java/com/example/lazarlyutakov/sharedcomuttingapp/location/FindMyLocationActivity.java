@@ -105,8 +105,6 @@ public class FindMyLocationActivity extends AppCompatActivity
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
-
-
         getLocationPermission();
         updateLocationUI();
         getDeviceLocation();

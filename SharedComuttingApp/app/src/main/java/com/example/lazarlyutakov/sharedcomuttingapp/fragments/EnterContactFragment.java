@@ -1,6 +1,7 @@
 package com.example.lazarlyutakov.sharedcomuttingapp.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.Contact;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
@@ -67,5 +69,8 @@ public class EnterContactFragment extends Fragment implements View.OnClickListen
         contact.setDriver(currDriver);
 
         dbHandler.updateUserContacts(contact);
+        Toast.makeText(getActivity(), contactName + " added successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), LoggedInActivity.class);
+        startActivity(intent);
     }
 }

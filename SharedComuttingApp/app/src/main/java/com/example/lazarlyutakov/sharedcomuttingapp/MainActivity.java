@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity {
 
         btnsFragment = new ButtonsFragment();
 
-        if(loggedUser != null){
+        /*if(loggedUser != null){
             Intent intent = new Intent(this, LoggedInActivity.class);
             startActivity(intent);
         }
-        else{
+        else{*/
             getFragmentManager()
                     .beginTransaction()
                     .replace(R.id.btns_fragment, btnsFragment)
                     .commit();
-        }
+        //}
     }
 }

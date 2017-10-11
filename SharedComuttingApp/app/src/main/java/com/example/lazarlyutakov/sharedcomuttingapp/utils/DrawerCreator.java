@@ -50,8 +50,8 @@ public class DrawerCreator {
     }
 
     public void createDrawer(final Activity activity) {
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("asd");
-        final SecondaryDrawerItem main = new SecondaryDrawerItem().withIdentifier(2).withName("Main");
+        final PrimaryDrawerItem main = new PrimaryDrawerItem().withIdentifier(1).withName("Main");
+        //final SecondaryDrawerItem main = new SecondaryDrawerItem().withIdentifier(2).withName("Main");
         final SecondaryDrawerItem contacts = new SecondaryDrawerItem().withIdentifier(2).withName("Contacts");
         final SecondaryDrawerItem logout = new SecondaryDrawerItem().withIdentifier(2).withName("Logout");
 
@@ -82,9 +82,8 @@ public class DrawerCreator {
                 .withActivity(activity)
                 //.withToolbar(toolbar)
                 .addDrawerItems(
-                        item1,
-                        new DividerDrawerItem(),
                         main,
+                        new DividerDrawerItem(),
                         contacts
                 )
                 .addDrawerItems(

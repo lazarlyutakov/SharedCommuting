@@ -41,6 +41,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private Fragment needRideFragment;
     private UserProfilFragment userProfilFragment;
     private LoadingSpinnerGenerator dialog;;
+    private FancyButton btnGoBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

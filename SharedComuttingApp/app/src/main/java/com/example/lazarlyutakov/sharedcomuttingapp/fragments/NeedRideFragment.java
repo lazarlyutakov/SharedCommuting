@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.DriverDetailsActivity;
+import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
@@ -49,6 +50,7 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
     private ArrayAdapter<User> driversAdapter;
     final private ArrayList<User> list = new ArrayList<>();
     private LinearLayout llNeedRide;
+    private FancyButton btnGoBack;
 
     public NeedRideFragment() {
         // Required empty public constructor
@@ -62,6 +64,7 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
 
         btnSetLocationNeed = (FancyButton) root.findViewById(R.id.btn_set_location_need);
         btnSearchForOffers = (FancyButton) root.findViewById(R.id.btn_search_for_offers);
+        btnGoBack = (FancyButton)root.findViewById(R.id.btn_go_back_need_ride);
         tvRadiusOfSearch = (AutoCompleteTextView) root.findViewById(R.id.et_set_radius_of_search);
         lvNearbyDrivers = (ListView) root.findViewById(R.id.lv_nearby_drivers);
         llNeedRide = (LinearLayout)root.findViewById(R.id.ll_need_ride);
@@ -75,6 +78,8 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
 
         btnSearchForOffers.setOnClickListener(this);
         btnSetLocationNeed.setOnClickListener(this);
+        btnGoBack.setOnClickListener(this);
+
 
         driversAdapter = new ArrayAdapter<User>(getActivity(), android.R.layout.simple_list_item_1) {
             @NonNull
@@ -104,11 +109,12 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        if (validator.validateSearchDistance(tvRadiusOfSearch) == false) {
-            return;
-        }
+
         switch (view.getId()) {
             case R.id.btn_search_for_offers:
+                if (validator.validateSearchDistance(tvRadiusOfSearch) == false) {
+                    return;
+                }
                 Double radius = Double.parseDouble(tvRadiusOfSearch.getText().toString());
 
                 Observable observable = dbHandler.findNearbyDrivers(radius);
@@ -131,6 +137,10 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
             case R.id.btn_set_location_need:
                 Intent intentLocation = new Intent(getActivity(), FindMyLocationActivity.class);
                 startActivity(intentLocation);
+                break;
+            case R.id.btn_go_back_need_ride:
+                Intent backToLoggedIn = new Intent(getActivity(), LoggedInActivity.class);
+                startActivity(backToLoggedIn);
                 break;
         }
     }

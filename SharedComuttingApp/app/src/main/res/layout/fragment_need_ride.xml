@@ -8,12 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_need_ride"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <mehdi.sakout.fancybuttons.FancyButton
@@ -24,6 +26,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
+                android:layout_margin="15dp"
                 fancy:fb_borderColor="#FFFFFF"
                 fancy:fb_borderWidth="1dp"
                 fancy:fb_defaultColor="#7ab800"
@@ -40,6 +43,7 @@
                     android:id="@+id/et_set_radius_of_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
                     android:hint="@string/prompt_set_search_radius"
                     android:inputType="number"
                     android:maxLines="1" />
@@ -54,6 +58,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
+                android:layout_margin="15dp"
                 fancy:fb_borderColor="#FFFFFF"
                 fancy:fb_borderWidth="1dp"
                 fancy:fb_defaultColor="#7ab800"
@@ -61,6 +66,23 @@
                 fancy:fb_radius="30dp"
                 fancy:fb_text="Search"
                 fancy:fb_textColor="#FFFFFF" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_go_back_need_ride"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:layout_margin="15dp"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#7ab800"
+            fancy:fb_focusColor="#9bd823"
+            fancy:fb_radius="30dp"
+            fancy:fb_text="Go back"
+            fancy:fb_textColor="#FFFFFF" />
         </LinearLayout>
 
         <com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView

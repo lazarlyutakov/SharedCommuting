@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class DriverDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String DRIVER_DETAILS = "Driver details";
@@ -40,12 +42,12 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     private DatabaseReference databaseReference;
     private String fName;
     private String lName;
-    private Button btnAddContact;
+    private FancyButton btnAddContact;
     private EnterContactFragment enterContactFragment;
     private LinearLayout llDriversDetails;
     private User user;
     private Contact contact;
-    private Button btnSendMessage;
+    private FancyButton btnSendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +65,8 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverEmail = (TextView) findViewById(R.id.driver_email);
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
-        btnAddContact = (Button)findViewById(R.id.btn_add_driver_to_contacts);
-        btnSendMessage = (Button)findViewById(R.id.btn_send_message);
+        btnAddContact = (FancyButton)findViewById(R.id.btn_add_driver_to_contacts);
+        btnSendMessage = (FancyButton)findViewById(R.id.btn_send_message);
         llDriversDetails = (LinearLayout)findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();

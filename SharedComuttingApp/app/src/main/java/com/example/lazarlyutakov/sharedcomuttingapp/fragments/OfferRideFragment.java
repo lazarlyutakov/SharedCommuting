@@ -38,6 +38,7 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
     private String car;
     private String seatsAvailable;
     private FancyButton btnSetLocation;
+    private FancyButton btnGoBack;
 
     public OfferRideFragment() {
         // Required empty public constructor
@@ -58,6 +59,9 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
 
         btnSetLocation = (FancyButton) root.findViewById(R.id.btn_set_location_offer);
         btnSetLocation.setOnClickListener(this);
+
+        btnGoBack = (FancyButton)root.findViewById(R.id.btn_go_back_offer_ride);
+        btnGoBack.setOnClickListener(this);
 
         database = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
@@ -80,6 +84,9 @@ public class OfferRideFragment extends Fragment implements View.OnClickListener 
                 Intent intentLocation = new Intent(getActivity(), FindMyLocationActivity.class);
                 startActivity(intentLocation);
                 break;
+            case R.id.btn_go_back_offer_ride:
+                Intent goBackIntent = new Intent(getActivity(), LoggedInActivity.class);
+                startActivity(goBackIntent);
         }
 
     }

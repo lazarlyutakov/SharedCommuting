@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class UserProfilFragment extends Fragment {
     private TextView seats;
     private DatabaseHandler dbReader;
     private User currUser;
+    private LinearLayout llCar;
+    private LinearLayout llSeats;
 
     public UserProfilFragment() {
         // Required empty public constructor
@@ -55,6 +58,8 @@ public class UserProfilFragment extends Fragment {
         email = (TextView) root.findViewById(R.id.signed_user_email);
         car = (TextView) root.findViewById(R.id.signed_user_car);
         seats = (TextView) root.findViewById(R.id.signed_seats_available);
+        llCar = (LinearLayout)root.findViewById(R.id.ll_car);
+        llSeats = (LinearLayout)root.findViewById(R.id.ll_seats);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -68,6 +73,8 @@ public class UserProfilFragment extends Fragment {
                         dbReader.readUserData(dataSnapshot).getSeatsAvailable() != null) {
                     car.setText(dbReader.readUserData(dataSnapshot).getCarModel());
                     seats.setText(dbReader.readUserData(dataSnapshot).getSeatsAvailable());
+                    llSeats.setVisibility(View.VISIBLE);
+                    llCar.setVisibility(View.VISIBLE);
                 }
             }
 

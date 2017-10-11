@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.LoadingSpinnerGenerator;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceDetectionClient;
@@ -53,10 +54,15 @@ public class FindMyLocationActivity extends AppCompatActivity
     private double currUserLatitude;
     private double currentUserLongitude;
     private DatabaseHandler dbHandler;
+    private LoadingSpinnerGenerator dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dialog = new LoadingSpinnerGenerator(this);
+
+        dialog.show();
 
         if (savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -103,6 +109,9 @@ public class FindMyLocationActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap map) {
+        dialog.hide();
+        dialog.cancel();
+
         mMap = map;
 
         getLocationPermission();
@@ -150,6 +159,7 @@ public class FindMyLocationActivity extends AppCompatActivity
                             mMap.moveCamera(CameraUpdateFactory
                                     .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
                         }
                     }
                 });
@@ -168,6 +178,7 @@ public class FindMyLocationActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
         }
     }
 
@@ -198,6 +209,7 @@ public class FindMyLocationActivity extends AppCompatActivity
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
             } else {
+
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;

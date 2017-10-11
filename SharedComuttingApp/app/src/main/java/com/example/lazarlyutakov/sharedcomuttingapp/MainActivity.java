@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn.LoggedInActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.ButtonsFragment;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.LoadingSpinnerGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

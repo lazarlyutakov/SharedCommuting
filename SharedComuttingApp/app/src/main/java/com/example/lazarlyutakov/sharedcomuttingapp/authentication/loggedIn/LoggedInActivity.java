@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.lazarlyutakov.sharedcomuttingapp.MainActivity;
 import com.example.lazarlyutakov.sharedcomuttingapp.R;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.NeedRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment;
@@ -45,6 +46,14 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
+        auth = FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser() == null){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return;
+        }
+
 
         tvLoggedInUser = (TextView)findViewById(R.id.tv_logged_user);
         btnOffer = (FancyButton)findViewById(R.id.btn_offer_ride);
@@ -53,7 +62,6 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         btnOffer.setOnClickListener(this);
         btnNeed.setOnClickListener(this);
 
-        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         final DatabaseHandler dbReader = new DatabaseHandler();

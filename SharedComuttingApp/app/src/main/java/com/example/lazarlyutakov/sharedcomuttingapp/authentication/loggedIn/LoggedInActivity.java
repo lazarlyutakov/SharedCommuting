@@ -2,6 +2,7 @@ package com.example.lazarlyutakov.sharedcomuttingapp.authentication.loggedIn;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.example.lazarlyutakov.sharedcomuttingapp.fragments.OfferRideFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.fragments.UserProfilFragment;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
+import com.example.lazarlyutakov.sharedcomuttingapp.utils.LoadingSpinnerGenerator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class LoggedInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,6 +39,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     private Fragment offerRideFragment;
     private Fragment needRideFragment;
     private UserProfilFragment userProfilFragment;
+    private LoadingSpinnerGenerator dialog;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,11 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
         databaseReference = database.getReference();
         final DatabaseHandler dbReader = new DatabaseHandler();
 
+        dialog = new LoadingSpinnerGenerator(this);
+       // dialog.generateLoadingSpinner(this);
+
+        dialog.show();
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -62,6 +72,9 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
                 lName = dbReader.readUserData(dataSnapshot).getLastName();
                 DrawerCreator drawer = new DrawerCreator(LoggedInActivity.this, auth, fName, lName);
                 drawer.createDrawer(LoggedInActivity.this);
+
+                dialog.hide();
+                dialog.cancel();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -73,6 +86,7 @@ public class LoggedInActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+
         userProfilFragment = new UserProfilFragment();
 
         Intent intent = getIntent();

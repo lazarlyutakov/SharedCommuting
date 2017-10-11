@@ -18,12 +18,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         btnsFragment = new ButtonsFragment();
 
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.btns_fragment, btnsFragment)
                 .commit();
+
     }
 }

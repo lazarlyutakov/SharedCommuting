@@ -49,6 +49,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.2.0'
     compile 'cc.cloudist.acplibrary:library:1.2.1'
     compile 'com.github.lzyzsd:circleprogress:1.2.1'
+    compile 'com.github.paolorotolo:expandableheightlistview:1.0.0'
     testCompile 'junit:junit:4.12'
 }
 

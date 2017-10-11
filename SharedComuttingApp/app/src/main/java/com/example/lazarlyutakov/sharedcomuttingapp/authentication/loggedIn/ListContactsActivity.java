@@ -19,6 +19,7 @@ import com.example.lazarlyutakov.sharedcomuttingapp.models.Contact;
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DrawerCreator;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,6 +53,10 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
         databaseReference = database.getReference();
 
         lvListedContacts = (ListView)findViewById(R.id.lv_list_of_contacts);
+
+        ExpandableHeightListView expandableListView = (ExpandableHeightListView) findViewById(R.id.lv_list_of_contacts);
+
+
 
         contactsAdapter = new ArrayAdapter<Contact>(this, android.R.layout.simple_list_item_1) {
             @NonNull
@@ -104,6 +109,8 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
         });
 
         lvListedContacts.setAdapter(contactsAdapter);
+        expandableListView.setAdapter(contactsAdapter);
+        expandableListView.setExpanded(true);
         lvListedContacts.setOnItemClickListener(ListContactsActivity.this);
 
     }

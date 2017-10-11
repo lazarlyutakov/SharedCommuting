@@ -24,6 +24,7 @@ import com.example.lazarlyutakov.sharedcomuttingapp.location.FindMyLocationActiv
 import com.example.lazarlyutakov.sharedcomuttingapp.models.User;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.DatabaseHandler;
 import com.example.lazarlyutakov.sharedcomuttingapp.utils.Validator;
+import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -67,6 +68,8 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
 
         auth = FirebaseAuth.getInstance();
 
+        ExpandableHeightListView expandableListView = (ExpandableHeightListView)root.findViewById(R.id.lv_nearby_drivers);
+
         dbHandler = new DatabaseHandler();
         validator = new Validator();
 
@@ -92,6 +95,8 @@ public class NeedRideFragment extends Fragment implements  View.OnClickListener,
         };
 
         lvNearbyDrivers.setAdapter(driversAdapter);
+        expandableListView.setAdapter(driversAdapter);
+        expandableListView.setExpanded(true);
         lvNearbyDrivers.setOnItemClickListener(this);
 
         return root;

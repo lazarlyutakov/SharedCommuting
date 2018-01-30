@@ -33,6 +33,8 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
     public static final String DRIVER_DETAILS = "Driver details";
     public static final String CLICKED_CONTACT = "clicked contact";
+    private final int POPUP_MSG_BOX_WIDTH = 1000;
+    private final int POPUP_MSG_BOX_HEIGHT = 1000;
 
     private TextView tvDriverFirstName;
     private TextView tvDriverLastName;
@@ -40,17 +42,22 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     private TextView tvDriverEmail;
     private TextView tvDriverCar;
     private TextView tvDriverSeatsAvailable;
+
     private FirebaseAuth auth;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+
     private String fName;
     private String lName;
+
     private FancyButton btnAddContact;
     private EnterContactFragment enterContactFragment;
+    private Button btnSendMsgToOtherUsr;
+    private FancyButton btnSendMessage;
+
     private LinearLayout llDriversDetails;
     private User user;
     private Contact contact;
-    private FancyButton btnSendMessage;
     private PopupWindow msgPopupWindow;
     private LinearLayout driverDetailActivity;
 
@@ -63,7 +70,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
 
         Intent intent = getIntent();
-        
+
         user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
         contact = (Contact) intent.getSerializableExtra(CLICKED_CONTACT);
 
@@ -73,8 +80,10 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverEmail = (TextView) findViewById(R.id.driver_email);
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
+
         btnAddContact = (FancyButton) findViewById(R.id.btn_add_driver_to_contacts);
         btnSendMessage = (FancyButton) findViewById(R.id.btn_send_message);
+
         llDriversDetails = (LinearLayout) findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();
@@ -141,8 +150,10 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.btn_send_message:
                 msgPopupWindow = createPopupWindow();
-                msgPopupWindow.showAtLocation(driverDetailActivity, Gravity.CENTER, 0, 0);
+                msgPopupWindow.showAtLocation(driverDetailActivity, Gravity.LEFT, 0, 0);
                 break;
+            case R.id.btn_send_msg_to_other_user:
+                Toast.makeText(this, "SENT", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,10 +164,16 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         View msgPopup = inflater.inflate(R.layout.send_message_popup, null);
 
         // create the poppup
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = POPUP_MSG_BOX_WIDTH;
+        int height = POPUP_MSG_BOX_HEIGHT;
         boolean focusable = true;
-        return new PopupWindow(msgPopup, width, height, focusable);
+        PopupWindow popupWindow = new PopupWindow(msgPopup, width, height, focusable);
+
+        btnSendMsgToOtherUsr = (Button)msgPopup.findViewById(R.id.btn_send_msg_to_other_user);
+        btnSendMsgToOtherUsr.setOnClickListener(this);
+        // Here I take the value of the text box !
+
+        return popupWindow;
     }
 
 

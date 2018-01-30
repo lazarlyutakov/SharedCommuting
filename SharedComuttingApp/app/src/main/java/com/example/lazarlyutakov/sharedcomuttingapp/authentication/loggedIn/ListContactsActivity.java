@@ -104,7 +104,6 @@ public class ListContactsActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 databaseReference.removeEventListener(this);
-
             }
         });
 

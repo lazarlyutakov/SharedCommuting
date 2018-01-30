@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,13 +51,29 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     private User user;
     private Contact contact;
     private FancyButton btnSendMessage;
+    private PopupWindow msgPopupWindow;
+    private LinearLayout driverDetailActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_driver_details);
+        driverDetailActivity = (LinearLayout) findViewById(R.id.ll_driver_details);
+
 
         Intent intent = getIntent();
+
+        // inflate the layout of the popup
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View msgPopup = inflater.inflate(R.layout.send_message_popup, null);
+
+        // create the poppup
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        msgPopupWindow = new PopupWindow(msgPopup, width, height, focusable);
+
 
         user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
         contact = (Contact)intent.getSerializableExtra(CLICKED_CONTACT);
@@ -132,7 +151,8 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
                         .commit();
                 break;
             case R.id.btn_send_message:
-                Toast.makeText(this, "messsage", Toast.LENGTH_SHORT).show();
+                msgPopupWindow.showAtLocation(driverDetailActivity, Gravity.CENTER, 0, 0);
+                //Toast.makeText(this, "messsage", Toast.LENGTH_SHORT).show();
                 break;
         }
 

@@ -63,20 +63,9 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
 
 
         Intent intent = getIntent();
-
-        // inflate the layout of the popup
-        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-        View msgPopup = inflater.inflate(R.layout.send_message_popup, null);
-
-        // create the poppup
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        msgPopupWindow = new PopupWindow(msgPopup, width, height, focusable);
-
-
+        
         user = (User) intent.getSerializableExtra(DRIVER_DETAILS);
-        contact = (Contact)intent.getSerializableExtra(CLICKED_CONTACT);
+        contact = (Contact) intent.getSerializableExtra(CLICKED_CONTACT);
 
         tvDriverFirstName = (TextView) findViewById(R.id.driver_first_name);
         tvDriverLastName = (TextView) findViewById(R.id.driver_last_name);
@@ -84,16 +73,16 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
         tvDriverEmail = (TextView) findViewById(R.id.driver_email);
         tvDriverCar = (TextView) findViewById(R.id.driver_car);
         tvDriverSeatsAvailable = (TextView) findViewById(R.id.driver_seats_available);
-        btnAddContact = (FancyButton)findViewById(R.id.btn_add_driver_to_contacts);
-        btnSendMessage = (FancyButton)findViewById(R.id.btn_send_message);
-        llDriversDetails = (LinearLayout)findViewById(R.id.ll_driver_details);
+        btnAddContact = (FancyButton) findViewById(R.id.btn_add_driver_to_contacts);
+        btnSendMessage = (FancyButton) findViewById(R.id.btn_send_message);
+        llDriversDetails = (LinearLayout) findViewById(R.id.ll_driver_details);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         final DatabaseHandler dbReader = new DatabaseHandler();
 
-        if(user != null) {
+        if (user != null) {
             tvDriverFirstName.setText(user.getFirstName());
             tvDriverLastName.setText(user.getLastName());
             tvDriverPhoneNumber.setText(user.getPhoneNumber());
@@ -101,7 +90,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
             tvDriverCar.setText(user.getCarModel());
             tvDriverSeatsAvailable.setText(user.getSeatsAvailable());
         }
-        if(contact != null){
+        if (contact != null) {
             btnAddContact.setVisibility(View.GONE);
             btnSendMessage.setVisibility(View.VISIBLE);
 
@@ -136,7 +125,7 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.btn_add_driver_to_contacts :
+            case R.id.btn_add_driver_to_contacts:
                 enterContactFragment = new EnterContactFragment();
 
                 Bundle bundle = new Bundle();
@@ -151,12 +140,26 @@ public class DriverDetailsActivity extends AppCompatActivity implements View.OnC
                         .commit();
                 break;
             case R.id.btn_send_message:
+                msgPopupWindow = createPopupWindow();
                 msgPopupWindow.showAtLocation(driverDetailActivity, Gravity.CENTER, 0, 0);
-                //Toast.makeText(this, "messsage", Toast.LENGTH_SHORT).show();
                 break;
         }
-
-
     }
+
+    private PopupWindow createPopupWindow() {
+
+        // inflate the layout of the popup
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View msgPopup = inflater.inflate(R.layout.send_message_popup, null);
+
+        // create the poppup
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        return new PopupWindow(msgPopup, width, height, focusable);
+    }
+
+
 }
+
 

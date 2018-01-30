@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#62def8">
+    android:orientation="vertical"
+    android:background="#ffffff">
 
-    <TextView
+    <EditText
+        android:id="@+id/ppW_msgToOtherUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_margin="30dp"
-        android:textSize="22sp"
-        android:text="This is a popup window."/>
+        android:textSize="12sp"/>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/btn_send_msg_to_other_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"/>
+
+</LinearLayout>
